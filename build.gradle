@@ -65,6 +65,14 @@ subprojects {
     maven { url = 'https://central.sonatype.com/repository/maven-snapshots/' }
     maven { url = 'https://jitpack.io' }
   }
+  apply plugin: 'checkstyle'
+
+  checkstyle {
+    toolVersion = '10.24.0'
+    configFile = rootProject.file(
+      'config/checkstyle/google_checks.xml'
+    )
+  }
 }
 
 eclipse.project.name = 'Group9_Part1_project' + '-parent'
