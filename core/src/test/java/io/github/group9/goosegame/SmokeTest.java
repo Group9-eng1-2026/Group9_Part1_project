@@ -1,4 +1,4 @@
-package io.group9.goosegame;
+package io.github.group9.goosegame;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
