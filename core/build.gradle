@@ -7,6 +7,20 @@ dependencies {
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
+
+  // JUnit 5 Testing Dependencies
+  testImplementation "org.junit.jupiter:junit-jupiter-api:5.10.0"
+  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.10.0"
+  testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.10.0"
+}
+
+test{
+  useJUnitPlatform()
+
+  testLogging {
+    events "passed", "skipped", "failed"
+    showStandardStreams = true
+  }
 }
 
 jar {
