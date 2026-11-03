@@ -27,6 +27,9 @@ allprojects {
 
 configure(subprojects) {
   apply plugin: 'java-library'
+  tasks.withType(Checkstyle).configureEach {
+    exclude '**/lwjgl3/**'
+  }
   java.sourceCompatibility = 8
   java.targetCompatibility = 8
 

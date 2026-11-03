@@ -1,11 +1,13 @@
 package io.github.group9.goosegame;
 
 import java.util.Collections;
+
+import io.github.group9.goosegame.entities.Entity;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EntityTest {
-    private static class TestEntity extends Entity{
+    private static class TestEntity extends Entity {
         public TestEntity(float posX, float posY, float sizeX, float sizeY) {
             super(posX, posY, sizeX, sizeY);
         }
