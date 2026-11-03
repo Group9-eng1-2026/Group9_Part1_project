@@ -1,32 +1,33 @@
 package io.github.group9.goosegame;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Gdx;
+// import com.badlogic.gdx.graphics.Texture;
+// import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+// import com.badlogic.gdx.utils.ScreenUtils;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
-  private SpriteBatch batch;
-  private Texture image;
 
-  @Override
-  public void create() {
-    batch = new SpriteBatch();
-    image = new Texture("libgdx.png");
-  }
+    private GameLoop gameLoop;
 
-  @Override
-  public void render() {
-    ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-    batch.begin();
-    batch.draw(image, 140, 210);
-    batch.end();
-  }
+    @Override
+    public void create() {
+        gameLoop = new GameLoop();
+    }
 
-  @Override
-  public void dispose() {
-    batch.dispose();
-    image.dispose();
-  }
+    @Override
+    public void render() {
+        gameLoop.render(Gdx.graphics.getDeltaTime());
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        gameLoop.resize(width, height);
+    }
+
+    @Override
+    public void dispose() {
+        gameLoop.dispose();
+    }
 }
