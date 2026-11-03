@@ -3,14 +3,12 @@ package io.github.group9.goosegame;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-public class Player {
+public class Player extends Entity{
     public static final float SIZE = 32f;
     private static final float SPEED = 250f;
 
-    public final Vector2 pos;
-
     public Player(float x, float y) {
-        pos = new Vector2(x, y);
+        super(x, y, SIZE, SPEED);
     }
 
     public void update(float deltaTime, float dx, float dy, float worldWidth, float worldHeight) {
@@ -22,7 +20,7 @@ public class Player {
         }
 
         pos.mulAdd(direction, SPEED * deltaTime);
-        
+
         // Keeps player within world boundaries
         float half = SIZE / 2f;
         pos.x = MathUtils.clamp(pos.x, half, worldWidth - half);
