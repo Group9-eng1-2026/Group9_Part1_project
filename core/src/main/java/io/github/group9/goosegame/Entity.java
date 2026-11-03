@@ -12,7 +12,7 @@ public abstract class Entity {
     public float entitySize;
     private float entitySpeed;
 
-    public Vector2 pos;
+    public final Vector2 pos;
 
     public Entity(float x, float y, float entitySize, float entitySpeed) {
         pos = new Vector2(x, y);
