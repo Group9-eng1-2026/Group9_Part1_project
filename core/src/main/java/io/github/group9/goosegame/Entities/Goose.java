@@ -8,14 +8,17 @@ import jdk.jshell.spi.ExecutionControl;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+
 public class Goose extends Entity{
     //Constants
     public static final float SIZE = 32f;
-    public static final float SPEED = 150f;
+    public static final float SPEED = 100f;
 
     //Attributes
     public Queue<Vector2> moves = new LinkedList<>();
     private Player player;
+    public int recovering = 0;
 
     //Constructor
     public Goose(float x, float y, Player player){
@@ -34,6 +37,11 @@ public class Goose extends Entity{
      */
     @Override
     public void update(float deltaTime, float dx, float dy, float worldWidth, float worldHeight) {
+        if (recovering > 0)
+        {
+            recovering--;
+            return;
+        }
         if (moves.isEmpty()) {
             Pathfinder.generateMoves(player, this);
         }
@@ -45,7 +53,13 @@ public class Goose extends Entity{
             direction.nor();
         }
 
+        if (random.nextBoolean()) { dx *= -1; }
+        if (random.nextBoolean()) { dy *= -1; }
+        pos.x += dx;
+        pos.y += dy;
+
         pos.mulAdd(direction, SPEED * deltaTime);
+
 
         // Keeps Goose within world boundaries
         float half = SIZE / 2f;

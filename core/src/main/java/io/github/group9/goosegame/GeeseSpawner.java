@@ -9,9 +9,12 @@ public class GeeseSpawner {
     private static Random random = new Random();
 
     public static void spawnGoose(Player player, World world) {
-
-        float spawnX = player.pos.x + 5f + random.nextFloat() * 5f;
-        float spawnY = player.pos.y + 5f + random.nextFloat() * 5f;
+        float dx = random.nextFloat() * 5f;
+        float dy = random.nextFloat() * 5f;
+        if (random.nextBoolean()) { dx *= -1; }
+        if (random.nextBoolean()) { dy *= -1; }
+        float spawnX = player.pos.x + dx * 100;
+        float spawnY = player.pos.y + dy * 100;
         world.geese.add(new Goose(spawnX, spawnY, player));
         gooseCount++;
     }

@@ -22,10 +22,10 @@ public class GameLoop {
         handleInput();
         if (state == GameState.PLAYING) {
             update(deltaTime);
+            //Handle Geese
+            HandleGeese();
         }
         renderScreen.render(world, clock, state);
-        //Handle Geese
-        HandleGeese();
     }
 
     public void HandleGeese(){

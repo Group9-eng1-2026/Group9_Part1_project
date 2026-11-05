@@ -6,7 +6,6 @@ import io.github.group9.goosegame.Entities.Goose;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 // Represents everything that exists in the game world
 // Geese, items and hidden events will have to be added here later
@@ -32,8 +31,19 @@ public class World {
 
         //Geese
         for (Goose goose : this.geese){
-            Random random = new Random();
-            goose.update(deltaTime, 0f, 0f, WIDTH, HEIGHT);
+            for (Goose other : this.geese){
+                if (other.intersects(goose)) {
+                    if (other != goose) {
+                        while (other.intersects(goose)){
+                            goose.update(deltaTime, 3f, 3f, WIDTH, HEIGHT);
+                        }
+                        goose.recovering = 100;
+                    }
+                }
+                else {
+                    goose.update(deltaTime, 0f, 0f, WIDTH, HEIGHT);
+                }
+            }
         };
     }
 }
