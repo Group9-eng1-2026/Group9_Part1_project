@@ -12,7 +12,7 @@ import static com.badlogic.gdx.math.MathUtils.random;
 public class Goose extends Entity{
     //Constants
     public static final float SIZE = 32f;
-    public static final float SPEED = 75f;
+    public static final float SPEED = 40f;
 
     //Attributes
     public Queue<Vector2> moves = new LinkedList<>();
