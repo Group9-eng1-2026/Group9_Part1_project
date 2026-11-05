@@ -2,6 +2,7 @@ package io.github.group9.goosegame.Entities;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import io.github.group9.goosegame.Pathfinder;
 import jdk.jshell.spi.ExecutionControl;
 
 import java.util.LinkedList;
@@ -14,10 +15,12 @@ public class Goose extends Entity{
 
     //Attributes
     public Queue<Vector2> moves = new LinkedList<>();
+    private Player player;
 
     //Constructor
-    public Goose(float x, float y){
+    public Goose(float x, float y, Player player){
         super(x, y, SIZE, SPEED);
+        this.player = player;
     }
 
     //Methods
@@ -32,8 +35,7 @@ public class Goose extends Entity{
     @Override
     public void update(float deltaTime, float dx, float dy, float worldWidth, float worldHeight) {
         if (moves.isEmpty()) {
-            //TODO Generate additional moves.
-            throw new UnsupportedOperationException("Not implemented yet.");
+            Pathfinder.generateMoves(player, this);
         }
 
         Vector2 direction = moves.poll();
