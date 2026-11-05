@@ -1,6 +1,7 @@
 package io.github.group9.goosegame;
 
 import com.badlogic.gdx.math.Vector2;
+import io.github.group9.goosegame.Entities.Player;
 
 // Represents everything that exists in the game world
 // Geese, items and hidden events will have to be added here later

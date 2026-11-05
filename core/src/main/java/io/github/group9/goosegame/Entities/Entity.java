@@ -1,4 +1,4 @@
-package io.github.group9.goosegame;
+package io.github.group9.goosegame.Entities;
 
 
 
