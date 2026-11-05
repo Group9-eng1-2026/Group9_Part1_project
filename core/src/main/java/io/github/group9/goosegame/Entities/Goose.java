@@ -9,6 +9,9 @@ import java.util.Queue;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
+/**
+ * Class used to represent Geese and handle their movement
+ */
 public class Goose extends Entity{
     //Constants
     public static final float SIZE = 32f;
@@ -26,13 +29,14 @@ public class Goose extends Entity{
     }
 
     //Methods
-    /** Takes a move from gooses pathfinder that will navigate it
+    /**
+     * Takes a move from gooses pathfinder that will navigate it
      * towards the player
-     * @param deltaTime Time since last frame
-     * @param dx Additional offset
-     * @param dy ADditional offse
-     * @param worldWidth Used to constrain Movement
-     * @param worldHeight Used to constrain Movement
+     * @param deltaTime Time since last frame - To make speed constant with regard to to frame rate
+     * @param dx Additional offset to help randomise movement
+     * @param dy Additional offset to help randomise movement
+     * @param worldWidth Used to constrain Movement to map
+     * @param worldHeight Used to constrain Movement to map
      */
     @Override
     public void update(float deltaTime, float dx, float dy, float worldWidth, float worldHeight) {

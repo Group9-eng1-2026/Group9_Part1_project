@@ -7,21 +7,30 @@ import io.github.group9.goosegame.Entities.Goose;
 import java.util.Random;
 
 public class Pathfinder {
-    /** Used so move generation can become Asynchronous to every 5 frames.
-     *
-     * @param target Target.
-     * @param goose Subject TO generate moves for.
+    /**
+     * Static method used to populate a gooses moves field.
+     * At present simply does straight line pathfinding due to lack of walls.
+     * @param target Target to pathfind to.
+     * @param goose Subject to generate moves for.
      */
     public static void generateMoves(Entity target, Goose goose){
+        /*If goose has touched another goose or player,
+          halts temporarily and update reflects this.
+        */
         if (goose.recovering > 0) {
             for (int i = 1; i <= goose.recovering; i++) {
                 goose.moves.add(new Vector2(0, 0));
             }
         }
+
+        //Straight line pathfinding to player
         Random random = new Random();
         float deltaX = (target.pos.x - goose.pos.x)/Math.abs(target.pos.x-goose.pos.x);
         float deltaY = (target.pos.y - goose.pos.y)/Math.abs(target.pos.y-goose.pos.y);
 
+        /*Chance of distracting goose based off heuristic,
+          this reduces clustering and makes geese more chaotic.
+        */
         float distractedChance = 0.07f;
         for (int i = 0; i < 50; i++){
             if (!(random.nextFloat() > distractedChance)) { deltaX *= -1; }
