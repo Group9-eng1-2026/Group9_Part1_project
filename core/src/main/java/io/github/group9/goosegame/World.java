@@ -29,7 +29,7 @@ public class World {
         //Player
         player.update(deltaTime, movement.x, movement.y, WIDTH, HEIGHT);
 
-        //Geese
+        //Geese Collisions
         for (Goose goose : this.geese){
             //Check intersections with player
             if (goose.intersects(player)) {
