@@ -13,7 +13,7 @@ import static com.badlogic.gdx.math.MathUtils.random;
 public class Goose extends Entity{
     //Constants
     public static final float SIZE = 32f;
-    public static final float SPEED = 100f;
+    public static final float SPEED = 75f;
 
     //Attributes
     public Queue<Vector2> moves = new LinkedList<>();
@@ -40,7 +40,7 @@ public class Goose extends Entity{
         if (recovering > 0)
         {
             recovering--;
-            return;
+            this.moves.clear();
         }
         if (moves.isEmpty()) {
             Pathfinder.generateMoves(player, this);

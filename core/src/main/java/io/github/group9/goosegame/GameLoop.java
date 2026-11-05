@@ -29,7 +29,7 @@ public class GameLoop {
     }
 
     public void HandleGeese(){
-        if (GeeseSpawner.getGooseCount() < 3){
+        if (GeeseSpawner.getGooseCount() < 30){
             GeeseSpawner.spawnGoose(world.getPlayer(), world);
         }
     }

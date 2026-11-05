@@ -35,15 +35,23 @@ public class World {
                 if (other.intersects(goose)) {
                     if (other != goose) {
                         while (other.intersects(goose)){
-                            goose.update(deltaTime, 3f, 3f, WIDTH, HEIGHT);
+                            goose.update(deltaTime, 10f, 10f, WIDTH, HEIGHT);
                         }
-                        goose.recovering = 100;
+                        goose.recovering = 1000;
                     }
                 }
                 else {
                     goose.update(deltaTime, 0f, 0f, WIDTH, HEIGHT);
                 }
             }
-        };
+            //Player intersect
+            if (goose.intersects(player)) {
+                player.exhastion -= 10;
+                goose.recovering = 10000;
+            }
+        }
+
+
+
     }
 }
