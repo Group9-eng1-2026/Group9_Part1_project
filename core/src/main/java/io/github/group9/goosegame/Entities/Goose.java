@@ -19,13 +19,13 @@ public class Goose extends Entity{
 
     //Attributes
     public Queue<Vector2> moves = new LinkedList<>();
-    private Player player;
+    private Entity target;
     public int recovering = 0;
 
     //Constructor
     public Goose(float x, float y, Player player){
         super(x, y, SIZE, SPEED);
-        this.player = player;
+        this.target = player;
     }
 
     //Methods
@@ -46,7 +46,7 @@ public class Goose extends Entity{
             this.moves.clear();
         }
         if (moves.isEmpty()) {
-            Pathfinder.generateMoves(player, this);
+            Pathfinder.generateMoves(target, this);
         }
 
         Vector2 direction = moves.poll();
@@ -68,5 +68,13 @@ public class Goose extends Entity{
         float half = SIZE / 2f;
         pos.x = MathUtils.clamp(pos.x, half, worldWidth - half);
         pos.y = MathUtils.clamp(pos.y, half, worldHeight - half);
+    }
+
+    /**
+     * Used to change pathfinding target of Geese.
+     * @param target Entity for Goose to target
+     */
+    public void changeTarget(Entity target){
+        this.target = target;
     }
 }
