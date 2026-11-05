@@ -1,9 +1,9 @@
-package io.github.group9.goosegame;
+package io.github.group9.goosegame.GeeseUtilities;
 
 import com.badlogic.gdx.math.Vector2;
 import io.github.group9.goosegame.Entities.Entity;
 import io.github.group9.goosegame.Entities.Goose;
-import io.github.group9.goosegame.Entities.Player;
+
 import java.util.Random;
 
 public class Pathfinder {

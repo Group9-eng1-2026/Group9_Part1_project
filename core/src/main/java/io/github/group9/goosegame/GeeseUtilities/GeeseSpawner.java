@@ -1,7 +1,9 @@
-package io.github.group9.goosegame;
+package io.github.group9.goosegame.GeeseUtilities;
 
 import io.github.group9.goosegame.Entities.Goose;
 import io.github.group9.goosegame.Entities.Player;
+import io.github.group9.goosegame.World;
+
 import java.util.Random;
 
 public class GeeseSpawner {

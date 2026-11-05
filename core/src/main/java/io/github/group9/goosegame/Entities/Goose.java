@@ -2,8 +2,7 @@ package io.github.group9.goosegame.Entities;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import io.github.group9.goosegame.Pathfinder;
-import jdk.jshell.spi.ExecutionControl;
+import io.github.group9.goosegame.GeeseUtilities.Pathfinder;
 
 import java.util.LinkedList;
 import java.util.Queue;

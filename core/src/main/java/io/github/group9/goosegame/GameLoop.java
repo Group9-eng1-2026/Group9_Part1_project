@@ -5,8 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 */
 
-import io.github.group9.goosegame.Entities.Goose;
-import java.util.Random;
+import io.github.group9.goosegame.GeeseUtilities.GeeseSpawner;
 
 public class GameLoop {
 
