@@ -7,7 +7,7 @@ public class Player extends Entity{
     public static final float SIZE = 32f;
     private static final float SPEED = 250f;
 
-    public float exhastion = 100;
+    public float exhaustion = 100; //Health bar
     public Player(float x, float y) {
         super(x, y, SIZE, SPEED);
     }

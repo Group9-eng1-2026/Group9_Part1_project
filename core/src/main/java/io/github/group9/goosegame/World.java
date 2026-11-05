@@ -31,27 +31,31 @@ public class World {
 
         //Geese
         for (Goose goose : this.geese){
-            for (Goose other : this.geese){
-                if (other.intersects(goose)) {
-                    if (other != goose) {
-                        while (other.intersects(goose)){
-                            goose.update(deltaTime, 10f, 10f, WIDTH, HEIGHT);
-                        }
-                        goose.recovering = 1000;
-                    }
-                }
-                else {
-                    goose.update(deltaTime, 0f, 0f, WIDTH, HEIGHT);
-                }
-            }
-            //Player intersect
+            //Check intersections with player
             if (goose.intersects(player)) {
-                player.exhastion -= 10;
+                player.exhaustion -= 10;
+                //Creates wait time until 10,000 frames have passed before goose can once again move
                 goose.recovering = 10000;
             }
+
+            //Check for collisions with other geese
+            for (Goose other : this.geese) {
+                //Skip if both are same
+                if (other.equals(goose)) { continue; }
+
+                if (!(other.intersects(goose))) {
+                    //Move normally
+                    goose.update(deltaTime, 0f, 0f, WIDTH, HEIGHT);
+                } else {
+                    //Ensure no longer collides with other goose
+                    while (other.intersects(goose)){
+                        goose.update(deltaTime, 10f, 10f, WIDTH, HEIGHT);
+                    }
+
+                    //Make geese wait if they intersect another goose that's not themselves.
+                    goose.recovering = 1000;
+                }
+            }
         }
-
-
-
     }
 }
