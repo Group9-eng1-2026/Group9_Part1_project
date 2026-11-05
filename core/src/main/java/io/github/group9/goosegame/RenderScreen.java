@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import io.github.group9.goosegame.Entities.Player;
 
 
 public class RenderScreen {
@@ -67,7 +68,7 @@ public class RenderScreen {
         for (float x = 0; x <= World.WIDTH; x += GRID) shapes.line(x, 0, x, World.HEIGHT);
         for (float y = 0; y <= World.HEIGHT; y += GRID) shapes.line(0, y, World.WIDTH, y);
         shapes.end();
-    
+
         // Renders player (currently black rectangle)
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.setColor(0, 0, 0, 1);
@@ -82,9 +83,9 @@ public class RenderScreen {
         batch.begin();
         font.draw(batch, "Time Left: " + clock.formatTime(), 10, HEIGHT - 10);
         font.draw(batch, "Game State: " + state.toString(), 10, HEIGHT - 40); // Temporary display of Game State
-        
+
         if (state == GameState.PAUSED) {
-            font.draw(batch, "GAME PAUSED\nPress SPACE to start/resume", WIDTH / 2f, HEIGHT / 2f, 0, Align.center, false);   
+            font.draw(batch, "GAME PAUSED\nPress SPACE to start/resume", WIDTH / 2f, HEIGHT / 2f, 0, Align.center, false);
         }
 
         /* Display game over message when the game has ended, can be changed when win/lose conditions are implemented */

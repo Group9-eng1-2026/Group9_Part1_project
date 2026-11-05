@@ -1,4 +1,4 @@
-package io.github.group9.goosegame;
+package io.github.group9.goosegame.Entities;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
