@@ -1,6 +1,6 @@
 package io.github.group9.goosegame;
 
-/*
+/* Add when textures are implemented:
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 */
@@ -36,6 +36,18 @@ public class GameLoop {
         if ((state == GameState.ENDED || state == GameState.PAUSED) && input.restartPressed()) {
             restart();
         }
+
+        // Allows user to select inventory slots when game is unpaused
+        if (state == GameState.PLAYING) {
+            int slot = input.slotPressed();
+            if (slot >= 0) {
+                world.getPlayer().getInventory().select(slot);
+            }
+            // Uses item when E is pressed
+            if (input.useItemPressed()) {
+                world.getPlayer().useSelectedItem(world);
+            }
+        }
     }
 
     // Resets the game state, world, and clock to start a new game
@@ -45,6 +57,7 @@ public class GameLoop {
         state = GameState.PAUSED;
     }
 
+    // Updates clock, ends game when timer reaches 0
     private void update(float deltaTime) {
         clock.update(deltaTime);
         if (clock.timeLeft <= 0) { 
