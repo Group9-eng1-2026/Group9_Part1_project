@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import io.github.group9.goosegame.Entities.Goose;
 import io.github.group9.goosegame.Entities.Player;
 
 public class RenderScreen {
@@ -79,6 +80,14 @@ public class RenderScreen {
         shapes.setColor(0, 0, 0, 1);
         shapes.rect(p.pos.x - Player.SIZE / 2f, p.pos.y - Player.SIZE / 2f, Player.SIZE, Player.SIZE);
         shapes.end();
+
+        //Renders Geese
+        for (Goose goose : world.geese) {
+            shapes.begin(ShapeRenderer.ShapeType.Filled);
+            shapes.setColor(1, 1, 1, 1);
+            shapes.rect(goose.pos.x - Goose.SIZE / 2f, goose.pos.y - Goose.SIZE / 2f, Goose.SIZE, Goose.SIZE);
+            shapes.end();
+        }
     }
 
     // Draws inventory hotbar, selected slot is blue
@@ -104,6 +113,8 @@ public class RenderScreen {
             shapes.rect(startX + i * (SLOT_SIZE + GAP), y, SLOT_SIZE, SLOT_SIZE);
         }
         shapes.end();
+
+
     }
 
     // Renders UI elements (time left, pause and game over messages)

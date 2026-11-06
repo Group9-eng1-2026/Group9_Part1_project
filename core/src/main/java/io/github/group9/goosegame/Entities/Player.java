@@ -11,6 +11,8 @@ public class Player extends Entity{
     public static final float SIZE = 32f;
     private static final float SPEED = 250f;
 
+    public float exhaustion = 100; //Health bar
+
     private final Inventory inventory = new Inventory();
     private final Vector2 facing = new Vector2(0, 1);
 

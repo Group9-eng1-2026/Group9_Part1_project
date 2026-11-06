@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 */
 
+import io.github.group9.goosegame.GeeseUtilities.GeeseSpawner;
+
 public class GameLoop {
 
     private World world = new World();
@@ -15,11 +17,20 @@ public class GameLoop {
     private GameState state = GameState.PAUSED; // Game start paused
 
     public void render(float deltaTime) {
+        //Handle player
         handleInput();
         if (state == GameState.PLAYING) {
             update(deltaTime);
+            //Handle Geese
+            HandleGeese();
         }
         renderScreen.render(world, clock, state);
+    }
+
+    public void HandleGeese(){
+        if (GeeseSpawner.getGooseCount() < 30){
+            GeeseSpawner.spawnGoose(world.getPlayer(), world);
+        }
     }
 
     private void handleInput() {
@@ -60,7 +71,7 @@ public class GameLoop {
     // Updates clock, ends game when timer reaches 0
     private void update(float deltaTime) {
         clock.update(deltaTime);
-        if (clock.timeLeft <= 0) { 
+        if (clock.timeLeft <= 0) {
             state = GameState.ENDED;
             return;
         }
