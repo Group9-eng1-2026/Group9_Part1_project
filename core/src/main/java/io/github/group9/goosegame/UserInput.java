@@ -24,4 +24,18 @@ public class UserInput {
     public boolean restartPressed() {
         return Gdx.input.isKeyJustPressed(Input.Keys.R);
     }
+
+    // Selects inventory slot 1-5 using number keys,
+    public int slotPressed() {
+        for (int i = 0; i < 5; i++) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1 + i)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public boolean useItemPressed() {
+        return Gdx.input.isKeyJustPressed(Input.Keys.E);
+    }
 }

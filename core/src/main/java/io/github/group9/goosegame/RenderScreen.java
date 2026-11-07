@@ -9,15 +9,19 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
 import io.github.group9.goosegame.Entities.Goose;
 import io.github.group9.goosegame.Entities.Player;
 
-
 public class RenderScreen {
     // Screen dimensions and grid
-    private final float WIDTH = 1280f;
-    private final float HEIGHT = 720f;
+    private final float WIDTH = 1024f;
+    private final float HEIGHT = 768f;
     private final float GRID = 100f;
+
+    // Inventory dimensions
+    private final float SLOT_SIZE = 64f;
+    private final float GAP = 10f;
 
     // Drawing tools
     private final ShapeRenderer shapes = new ShapeRenderer();
@@ -50,6 +54,7 @@ public class RenderScreen {
         batch.setProjectionMatrix(hudProjection);
 
         drawWorld(world);
+        drawInventory(player.getInventory());
         drawUI(clock, state);
     }
 
@@ -63,7 +68,7 @@ public class RenderScreen {
         shapes.rect(0,0, World.WIDTH, World.HEIGHT);
         shapes.end();
 
-        // Temporary grid lines to help see movement, can be removed later
+        // Grid lines to help see movement, can be removed after assets are added
         shapes.begin(ShapeRenderer.ShapeType.Line);
         shapes.setColor(0.4f, 0.7f, 0.4f, 1f);
         for (float x = 0; x <= World.WIDTH; x += GRID) shapes.line(x, 0, x, World.HEIGHT);
@@ -79,10 +84,37 @@ public class RenderScreen {
         //Renders Geese
         for (Goose goose : world.geese) {
             shapes.begin(ShapeRenderer.ShapeType.Filled);
-            shapes.setColor(255, 255, 255, 1);
+            shapes.setColor(1, 1, 1, 1);
             shapes.rect(goose.pos.x - Goose.SIZE / 2f, goose.pos.y - Goose.SIZE / 2f, Goose.SIZE, Goose.SIZE);
             shapes.end();
         }
+    }
+
+    // Draws inventory hotbar, selected slot is blue
+    private void drawInventory(Inventory inventory) {
+        float totalWidth = Inventory.INV_SIZE * SLOT_SIZE + (Inventory.INV_SIZE - 1) * GAP;
+        float startX = (WIDTH - totalWidth) / 2f;
+        float y = 20f;
+        shapes.setProjectionMatrix(hudProjection);
+ 
+        // Inventory backgrounds, 
+        shapes.begin(ShapeRenderer.ShapeType.Filled);
+        for (int i = 0; i < Inventory.INV_SIZE; i++) {
+            if (i == inventory.getSelectedSlot()) shapes.setColor(0.4f, 0.7f, 0.8f, 1f); // Makes selected slot blue
+            else shapes.setColor(0.9f, 0.9f, 0.9f, 1f);
+            shapes.rect(startX + i * (SLOT_SIZE + GAP), y, SLOT_SIZE, SLOT_SIZE);
+        }
+        shapes.end();
+ 
+        // Inventory slot outlines
+        shapes.begin(ShapeRenderer.ShapeType.Line);
+        shapes.setColor(0.1f, 0.1f, 0.1f, 1f);
+        for (int i = 0; i < Inventory.INV_SIZE; i++) {
+            shapes.rect(startX + i * (SLOT_SIZE + GAP), y, SLOT_SIZE, SLOT_SIZE);
+        }
+        shapes.end();
+
+
     }
 
     // Renders UI elements (time left, pause and game over messages)
