@@ -1,5 +1,6 @@
 package io.github.group9.goosegame;
 
+import io.github.group9.goosegame.Items.Inventory;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,6 +11,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import io.github.group9.goosegame.Entities.BreadEnitity;
+import io.github.group9.goosegame.Entities.Entity;
 import io.github.group9.goosegame.Entities.Goose;
 import io.github.group9.goosegame.Entities.Player;
 
@@ -88,6 +91,18 @@ public class RenderScreen {
             shapes.rect(goose.pos.x - Goose.SIZE / 2f, goose.pos.y - Goose.SIZE / 2f, Goose.SIZE, Goose.SIZE);
             shapes.end();
         }
+
+        //Renders Items
+        for (Entity itemEntity : world.itemEntities) {
+            if (itemEntity instanceof BreadEnitity) {
+                shapes.begin(ShapeRenderer.ShapeType.Filled);
+                shapes.setColor(255, 200, 0, 1);
+                float x = ((Entity) (BreadEnitity) itemEntity).pos.x - BreadEnitity.SIZE / 2f;
+                float y = ((Entity) (BreadEnitity) itemEntity).pos.y - BreadEnitity.SIZE / 2f;
+                shapes.rect(x, y, BreadEnitity.SIZE, BreadEnitity.SIZE);
+                shapes.end();
+            }
+        }
     }
 
     // Draws inventory hotbar, selected slot is blue
@@ -96,8 +111,8 @@ public class RenderScreen {
         float startX = (WIDTH - totalWidth) / 2f;
         float y = 20f;
         shapes.setProjectionMatrix(hudProjection);
- 
-        // Inventory backgrounds, 
+
+        // Inventory backgrounds,
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         for (int i = 0; i < Inventory.INV_SIZE; i++) {
             if (i == inventory.getSelectedSlot()) shapes.setColor(0.4f, 0.7f, 0.8f, 1f); // Makes selected slot blue
@@ -105,7 +120,7 @@ public class RenderScreen {
             shapes.rect(startX + i * (SLOT_SIZE + GAP), y, SLOT_SIZE, SLOT_SIZE);
         }
         shapes.end();
- 
+
         // Inventory slot outlines
         shapes.begin(ShapeRenderer.ShapeType.Line);
         shapes.setColor(0.1f, 0.1f, 0.1f, 1f);

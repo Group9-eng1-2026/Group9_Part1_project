@@ -3,9 +3,11 @@ package io.github.group9.goosegame.Entities;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.group9.goosegame.Inventory;
-import io.github.group9.goosegame.Entities.Item;
+import io.github.group9.goosegame.Items.Inventory;
+import io.github.group9.goosegame.Items.Item;
 import io.github.group9.goosegame.World;
+
+import java.util.List;
 
 public class Player extends Entity{
     public static final float SIZE = 32f;
@@ -49,8 +51,14 @@ public class Player extends Entity{
     public void useSelectedItem(World world) {
         Item item = inventory.getSelected();
         if (item != null && item.use(this, world)) {
+            world.items.add(item);
             inventory.removeSelected();
         }
     }
 
+    public void makeTargetOf(List<Goose> geese) {
+        for (Goose goose : geese) {
+            goose.changeTarget(this);
+        }
+    }
 }

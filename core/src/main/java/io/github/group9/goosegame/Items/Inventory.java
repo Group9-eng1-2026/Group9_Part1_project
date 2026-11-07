@@ -1,6 +1,4 @@
-package io.github.group9.goosegame;
-
-import io.github.group9.goosegame.Entities.Item;
+package io.github.group9.goosegame.Items;
 
 public class Inventory {
     public static final int INV_SIZE = 5;
@@ -8,12 +6,12 @@ public class Inventory {
     private final Item[] items = new Item[INV_SIZE];
     private final int[] counts = new int[INV_SIZE];
     private int selected = 0;
-   
-    /* Adds item to stack if same item is already in inventory, 
+
+    /* Adds item to stack if same item is already in inventory,
         or adds to first available free space*/
     public boolean add(Item item, int amount) {
         if (amount <= 0) return true;
-        
+
         for (int i = 0; i < INV_SIZE; i++) {
             if (items[i] != null && items[i].getName().equals(item.getName())) {
                 counts[i] += amount;

@@ -1,6 +1,9 @@
 package io.github.group9.goosegame;
 
+import io.github.group9.goosegame.Items.Bread;
+import io.github.group9.goosegame.Items.Item;
 import com.badlogic.gdx.math.Vector2;
+import io.github.group9.goosegame.Entities.Entity;
 import io.github.group9.goosegame.Entities.Player;
 import io.github.group9.goosegame.Entities.Goose;
 
@@ -16,9 +19,12 @@ public class World {
 
     private final Player player;
     public List<Goose> geese = new ArrayList<>();
+    public List<Item> items = new ArrayList<>();
+    public List<Entity> itemEntities = new ArrayList<>();
 
     public World() {
         player = new Player(WIDTH / 2f, HEIGHT / 2f);
+        player.getInventory().add(new Bread(), 3);
     }
 
     public Player getPlayer() {
@@ -29,6 +35,27 @@ public class World {
         //Player
         player.update(deltaTime, movement.x, movement.y, WIDTH, HEIGHT);
 
+        //Geese
+        handleGeese(deltaTime, movement);
+
+        //Items
+        handleItems(deltaTime);
+    }
+
+    public void handleItems(float deltaTime){
+        List<Item> toRemove = new ArrayList<>();
+        for (Item item : items) {
+            if (item instanceof Bread) {
+                if (!(((Bread) item).update(geese, player, deltaTime))){
+                    itemEntities.remove(((Bread) item).entity);
+                    toRemove.add(item);
+                }
+            }
+        }
+        items.removeAll(toRemove);
+    }
+
+    public void handleGeese(float deltaTime, Vector2 movement) {
         //Geese Collisions
         for (Goose goose : this.geese){
             //Check intersections with player
