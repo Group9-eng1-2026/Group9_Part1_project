@@ -1,8 +1,10 @@
 package io.github.group9.goosegame.GeeseUtilities;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import io.github.group9.goosegame.Entities.Entity;
 import io.github.group9.goosegame.Entities.Goose;
+import io.github.group9.goosegame.World;
 
 import java.util.Random;
 
@@ -25,8 +27,8 @@ public class Pathfinder {
 
         //Straight line pathfinding to player
         Random random = new Random();
-        float deltaX = (target.pos.x - goose.pos.x)/Math.abs(target.pos.x-goose.pos.x);
-        float deltaY = (target.pos.y - goose.pos.y)/Math.abs(target.pos.y-goose.pos.y);
+        float deltaX = Math.signum(target.pos.x - goose.pos.x);
+        float deltaY = Math.signum(target.pos.y - goose.pos.y);
 
         /*Chance of distracting goose based off heuristic,
           this reduces clustering and makes geese more chaotic.

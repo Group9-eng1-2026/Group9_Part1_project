@@ -58,8 +58,8 @@ public class Goose extends Entity{
 
         if (random.nextBoolean()) { dx *= -1; }
         if (random.nextBoolean()) { dy *= -1; }
-        pos.x += dx;
-        pos.y += dy;
+        direction.x += dx;
+        direction.y += dy;
 
         pos.mulAdd(direction, SPEED * deltaTime);
 

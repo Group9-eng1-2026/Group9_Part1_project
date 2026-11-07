@@ -23,8 +23,8 @@ public class GeeseSpawner {
         float dy = 50f + random.nextFloat() * 5f;
         if (random.nextBoolean()) { dx *= -1; }
         if (random.nextBoolean()) { dy *= -1; }
-        float spawnX = player.pos.x + dx * 100;
-        float spawnY = player.pos.y + dy * 100;
+        float spawnX = player.pos.x + dx * 10;
+        float spawnY = player.pos.y + dy * 10;
         world.geese.add(new Goose(spawnX, spawnY, player));
         gooseCount++;
     }
