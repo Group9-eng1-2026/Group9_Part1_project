@@ -9,6 +9,7 @@ import io.github.group9.goosegame.Entities.Goose;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 // Represents everything that exists in the game world
 // Geese, items and hidden events will have to be added here later
@@ -17,6 +18,7 @@ public class World {
     public static final float WIDTH = 3200f;
     public static final float HEIGHT = 1800f;
 
+    private final Random random = new Random();
     private final Player player;
     public List<Goose> geese = new ArrayList<>();
     public List<Item> items = new ArrayList<>();
@@ -62,25 +64,29 @@ public class World {
             if (goose.intersects(player)) {
                 player.exhaustion -= 10;
                 //Creates wait time until 10,000 frames have passed before goose can once again move
-                goose.recovering = 10000;
+                goose.recovering = 3f;
             }
+
+            //Move normally
+            goose.update(deltaTime, 0f, 0f, WIDTH, HEIGHT);
 
             //Check for collisions with other geese
             for (Goose other : this.geese) {
                 //Skip if both are same
-                if (other.equals(goose)) { continue; }
+                if (other == goose) { continue; }
 
-                if (!(other.intersects(goose))) {
-                    //Move normally
-                    goose.update(deltaTime, 0f, 0f, WIDTH, HEIGHT);
-                } else {
+                if (other.intersects(goose)) {
                     //Ensure no longer collides with other goose
-                    while (other.intersects(goose)){
+                    while (goose.intersects(other)){
+                        float nx = goose.pos.x + 50f;
+                        float ny = goose.pos.y + 50f;
+                        if (random.nextBoolean()) { nx *= -1; ny *= -1; }
+                        goose.changeTarget(new Player(nx, ny));
                         goose.update(deltaTime, 10f, 10f, WIDTH, HEIGHT);
+
                     }
 
-                    //Make geese wait if they intersect another goose that's not themselves.
-                    goose.recovering = 1000;
+                    goose.changeTarget(player);
                 }
             }
         }

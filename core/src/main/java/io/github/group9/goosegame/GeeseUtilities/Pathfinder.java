@@ -33,8 +33,8 @@ public class Pathfinder {
         /*Chance of distracting goose based off heuristic,
           this reduces clustering and makes geese more chaotic.
         */
-        float distractedChance = 0.07f;
-        for (int i = 0; i < 50; i++){
+        float distractedChance = 0.03f;
+        for (int i = 0; i < 10; i++){
             if (!(random.nextFloat() > distractedChance)) { deltaX *= -1; }
             if (!(random.nextFloat() > distractedChance)) { deltaY *= -1; }
             goose.moves.add(new Vector2(deltaX, deltaY));
