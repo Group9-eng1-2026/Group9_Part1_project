@@ -15,12 +15,12 @@ import static com.badlogic.gdx.math.MathUtils.random;
 public class Goose extends Entity{
     //Constants
     public static final float SIZE = 32f;
-    public static final float SPEED = 40f;
+    public static final float SPEED = 150f;
 
     //Attributes
     public Queue<Vector2> moves = new LinkedList<>();
     private Entity target;
-    public int recovering = 0;
+    public float recovering = 0;
 
     //Constructor
     public Goose(float x, float y, Player player){
@@ -42,7 +42,7 @@ public class Goose extends Entity{
     public void update(float deltaTime, float dx, float dy, float worldWidth, float worldHeight) {
         if (recovering > 0)
         {
-            recovering--;
+            recovering -= deltaTime;
             this.moves.clear();
         }
         if (moves.isEmpty()) {
