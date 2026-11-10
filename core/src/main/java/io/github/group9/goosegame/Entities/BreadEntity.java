@@ -7,13 +7,13 @@ import java.util.List;
 /**
  * Class that holds physical presence of bread object.
  */
-public class BreadEnitity extends Entity {
+public class BreadEntity extends Entity {
     //Constants
     public static final float SIZE = 24f;
     public static final float SPEED = 0f;
 
     //Constructor
-    public BreadEnitity(Vector2 pos) {
+    public BreadEntity(Vector2 pos) {
         super(pos.x, pos.y, SIZE, SPEED);
     }
 

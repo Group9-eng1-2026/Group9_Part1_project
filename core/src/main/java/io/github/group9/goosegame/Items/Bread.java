@@ -2,14 +2,13 @@ package io.github.group9.goosegame.Items;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import io.github.group9.goosegame.Entities.BreadEnitity;
+import io.github.group9.goosegame.Entities.BreadEntity;
 import io.github.group9.goosegame.Entities.Goose;
 import io.github.group9.goosegame.Entities.Player;
 import io.github.group9.goosegame.World;
 
 import java.util.List;
 
-import static java.lang.Math.clamp;
 
 /**
  * Class that represents bread Item.
@@ -23,7 +22,7 @@ public class Bread extends Item{
     //Attributes
     private float lifeTime;
     public Vector2 position;
-    public BreadEnitity entity;
+    public BreadEntity entity;
 
     //Constructor
     public Bread() {
@@ -51,11 +50,11 @@ public class Bread extends Item{
 
         Vector2 playerPos = new Vector2(player.pos.x, player.pos.y);
         Vector2 thisPos = playerPos.add(player.getFacing().scl(THROW_DISTANCE));
-        float nx = MathUtils.clamp(thisPos.x, BreadEnitity.SIZE / 2f, World.WIDTH);
-        float ny = MathUtils.clamp(thisPos.y, BreadEnitity.SIZE / 2f, World.HEIGHT);
+        float nx = MathUtils.clamp(thisPos.x, BreadEntity.SIZE / 2f, World.WIDTH);
+        float ny = MathUtils.clamp(thisPos.y, BreadEntity.SIZE / 2f, World.HEIGHT);
         this.position = new Vector2(nx, ny);
         this.lifeTime = START_LIFETIME;
-        this.entity = new BreadEnitity(position);
+        this.entity = new BreadEntity(position);
         world.itemEntities.add(entity);
         return true;
     }

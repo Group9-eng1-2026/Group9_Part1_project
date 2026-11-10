@@ -12,11 +12,9 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import io.github.group9.goosegame.Entities.BreadEnitity;
+import io.github.group9.goosegame.Entities.BreadEntity;
 import io.github.group9.goosegame.Entities.Entity;
 import io.github.group9.goosegame.Entities.Goose;
 import io.github.group9.goosegame.Entities.Player;
@@ -33,9 +31,9 @@ public class RenderScreen {
 
     // Drawing tools
     private final ShapeRenderer shapes = new ShapeRenderer();
-    private final SpriteBatch batch = new SpriteBatch();
     private final BitmapFont font = new BitmapFont();
     private final OrthographicCamera camera = new OrthographicCamera();
+    private SpriteBatch batch = new SpriteBatch();
 
     // Camera and viewport setup
     private final FitViewport viewport = new FitViewport(WIDTH, HEIGHT, camera);
@@ -43,10 +41,14 @@ public class RenderScreen {
 
     // Textures and assets
     Texture winText = new Texture(Gdx.files.internal("Win.png"));
+    Texture gameOver = new Texture(Gdx.files.internal("GameOver.png"));
+
+    Texture gooseTexture = new Texture(Gdx.files.internal("Goose.png"));
+    Texture breadTexture = new Texture(Gdx.files.internal("Bread.png"));
 
     public RenderScreen() {
         font.getData().setScale(2f); // Font size
-        font.setColor(1, 1, 1, 1);
+        font.setColor(0, 0, 0, 1);
     }
 
     public void render(World world, Clock clock, GameState state) {
@@ -62,7 +64,6 @@ public class RenderScreen {
         camera.update();
 
         shapes.setProjectionMatrix(camera.combined);
-        batch.setProjectionMatrix(hudProjection);
 
         drawWorld(world);
         drawInventory(player.getInventory());
@@ -86,6 +87,18 @@ public class RenderScreen {
         for (float y = 0; y <= World.HEIGHT; y += GRID) shapes.line(0, y, World.WIDTH, y);
         shapes.end();
 
+        //Renders Items
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        for (Entity itemEntity : world.itemEntities) {
+            if (itemEntity instanceof BreadEntity) {
+                float x = ((Entity) (BreadEntity) itemEntity).pos.x - BreadEntity.SIZE / 2f;
+                float y = ((Entity) (BreadEntity) itemEntity).pos.y - BreadEntity.SIZE / 2f;
+                batch.draw(breadTexture, x, y, BreadEntity.SIZE, BreadEntity.SIZE);
+            }
+        }
+        batch.end();
+
         // Renders player (currently black rectangle)
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.setColor(0, 0, 0, 1);
@@ -93,24 +106,11 @@ public class RenderScreen {
         shapes.end();
 
         //Renders Geese
+        batch.begin();
         for (Goose goose : world.geese) {
-            shapes.begin(ShapeRenderer.ShapeType.Filled);
-            shapes.setColor(1, 1, 1, 1);
-            shapes.rect(goose.pos.x - Goose.SIZE / 2f, goose.pos.y - Goose.SIZE / 2f, Goose.SIZE, Goose.SIZE);
-            shapes.end();
+            batch.draw(gooseTexture, goose.pos.x - Goose.SIZE / 2f, goose.pos.y - Goose.SIZE / 2f, Goose.SIZE, Goose.SIZE * 27/18);
         }
-
-        //Renders Items
-        for (Entity itemEntity : world.itemEntities) {
-            if (itemEntity instanceof BreadEnitity) {
-                shapes.begin(ShapeRenderer.ShapeType.Filled);
-                shapes.setColor(255, 200, 0, 1);
-                float x = ((Entity) (BreadEnitity) itemEntity).pos.x - BreadEnitity.SIZE / 2f;
-                float y = ((Entity) (BreadEnitity) itemEntity).pos.y - BreadEnitity.SIZE / 2f;
-                shapes.rect(x, y, BreadEnitity.SIZE, BreadEnitity.SIZE);
-                shapes.end();
-            }
-        }
+        batch.end();
     }
 
     // Draws inventory hotbar, selected slot is blue
@@ -136,11 +136,11 @@ public class RenderScreen {
             shapes.rect(startX + i * (SLOT_SIZE + GAP), y, SLOT_SIZE, SLOT_SIZE);
         }
         shapes.end();
-
     }
 
     // Renders UI elements (Time left, counters, pause and game over messages)
     private void drawUI(Clock clock, GameState state) {
+        batch.setProjectionMatrix(hudProjection);
         batch.begin();
         // Timer and counter displays
         font.draw(batch, "Time Left: " + clock.formatTime(), 10, HEIGHT - 10);
@@ -152,7 +152,8 @@ public class RenderScreen {
 
         // Display game over message when game is lost
         if (state == GameState.LOSE) {
-            font.draw(batch, "GAME OVER\nYou ran out of time\nPress R to restart", WIDTH / 2f, HEIGHT / 2f, 0, Align.center, false);
+            batch.draw(gameOver, (WIDTH - gameOver.getWidth())/2, HEIGHT/2 + 25f);
+            font.draw(batch, "You ran out of time\nPress R to restart", WIDTH / 2f, HEIGHT / 2f - 50f, 0, Align.center, false);
         }
 
         if (state == GameState.WIN) {
@@ -172,5 +173,9 @@ public class RenderScreen {
         shapes.dispose();
         batch.dispose();
         font.dispose();
+        
+        gooseTexture.dispose();
+        winText.dispose();
+        gameOver.dispose();
     }
 }
