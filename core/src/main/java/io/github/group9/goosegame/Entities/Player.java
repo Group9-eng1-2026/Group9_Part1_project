@@ -21,6 +21,7 @@ public class Player extends Entity{
 
     public Player(float x, float y) {
         super(x, y, SIZE, SPEED);
+        itemCount = 0;
     }
 
     public void update(float deltaTime, float dx, float dy, float worldWidth, float worldHeight) {

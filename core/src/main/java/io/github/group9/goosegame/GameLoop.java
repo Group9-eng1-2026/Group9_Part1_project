@@ -1,13 +1,13 @@
 package io.github.group9.goosegame;
 
+import io.github.group9.goosegame.Entities.Player;
+
 /* Add when textures are implemented:
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 */
 
 import io.github.group9.goosegame.GeeseUtilities.GeeseSpawner;
-import io.github.group9.goosegame.Entities.Player;
-
 
 public class GameLoop {
 
@@ -23,8 +23,16 @@ public class GameLoop {
         handleInput();
         if (state == GameState.PLAYING) {
             update(deltaTime);
+            //Handle Geese
+            HandleGeese();
         }
         renderScreen.render(world, clock, state);
+    }
+
+    public void HandleGeese(){
+        if (GeeseSpawner.getGooseCount() < 30){
+            GeeseSpawner.spawnGoose(world.getPlayer(), world);
+        }
     }
 
     private void handleInput() {
@@ -60,6 +68,7 @@ public class GameLoop {
         world = new World();
         clock.reset();
         state = GameState.PAUSED;
+
     }
 
     // Updates clock, ends game when timer reaches 0
@@ -75,7 +84,6 @@ public class GameLoop {
             state = GameState.WIN;
             return;
         }
-
         world.update(deltaTime, input.getInput());
     }
 
