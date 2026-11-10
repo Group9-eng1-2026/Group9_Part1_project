@@ -30,4 +30,6 @@ public class GeeseSpawner {
     }
 
     public static int getGooseCount() { return gooseCount; }
+
+    public static void reset() { gooseCount = 0; }
 }

@@ -1,6 +1,9 @@
 package io.github.group9.goosegame;
 
 import io.github.group9.goosegame.Entities.Player;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+
 
 /* Add when textures are implemented:
 import com.badlogic.gdx.graphics.Texture;
@@ -68,7 +71,7 @@ public class GameLoop {
         world = new World();
         clock.reset();
         state = GameState.PAUSED;
-
+        GeeseSpawner.reset();
     }
 
     // Updates clock, ends game when timer reaches 0
@@ -80,7 +83,7 @@ public class GameLoop {
         }
 
         // Player wins if item count is >= 1 (Replace with win condition)
-        if (Player.itemCount >= 1) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
             state = GameState.WIN;
             return;
         }

@@ -83,7 +83,6 @@ public class World {
                         if (random.nextBoolean()) { nx *= -1; ny *= -1; }
                         goose.changeTarget(new Player(nx, ny));
                         goose.update(deltaTime, 10f, 10f, WIDTH, HEIGHT);
-
                     }
 
                     goose.changeTarget(player);

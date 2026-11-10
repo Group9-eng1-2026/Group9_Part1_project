@@ -18,6 +18,7 @@ import io.github.group9.goosegame.Entities.BreadEntity;
 import io.github.group9.goosegame.Entities.Entity;
 import io.github.group9.goosegame.Entities.Goose;
 import io.github.group9.goosegame.Entities.Player;
+import io.github.group9.goosegame.Items.Item;
 
 public class RenderScreen {
     // Screen dimensions and grid
@@ -39,12 +40,12 @@ public class RenderScreen {
     private final FitViewport viewport = new FitViewport(WIDTH, HEIGHT, camera);
     private final Matrix4 hudProjection = new Matrix4().setToOrtho2D(0, 0, WIDTH, HEIGHT);
 
-    // Textures and assets
-    Texture winText = new Texture(Gdx.files.internal("Win.png"));
-    Texture gameOver = new Texture(Gdx.files.internal("GameOver.png"));
+    // Textures and assets, including dimensions in pixels
+    Texture winText = new Texture(Gdx.files.internal("Win.png")); // 47x25
+    Texture gameOver = new Texture(Gdx.files.internal("GameOver.png")); // 27x19
 
-    Texture gooseTexture = new Texture(Gdx.files.internal("Goose.png"));
-    Texture breadTexture = new Texture(Gdx.files.internal("Bread.png"));
+    Texture gooseTexture = new Texture(Gdx.files.internal("Goose.png")); // 18x27
+    Texture breadTexture = new Texture(Gdx.files.internal("Bread.png")); // 24x24
 
     public RenderScreen() {
         font.getData().setScale(2f); // Font size
@@ -136,6 +137,21 @@ public class RenderScreen {
             shapes.rect(startX + i * (SLOT_SIZE + GAP), y, SLOT_SIZE, SLOT_SIZE);
         }
         shapes.end();
+
+        // Items and item counts
+        batch.setProjectionMatrix(hudProjection);
+        batch.begin();
+        for (int i = 0; i < Inventory.INV_SIZE; i++) {
+            float x = startX + i * (SLOT_SIZE + GAP);
+            Item item = inventory.getItem(i);
+            if (item != null) {
+                batch.draw(breadTexture, x + 8f, y + 8f, 48f, 48f);
+                if (inventory.getCount(i) > 1) {
+                    font.draw(batch, String.valueOf(inventory.getCount(i)), x, y + SLOT_SIZE - 5f, SLOT_SIZE - 5f, Align.right, false);
+                }
+            }
+        }
+        batch.end();
     }
 
     // Renders UI elements (Time left, counters, pause and game over messages)
@@ -177,5 +193,6 @@ public class RenderScreen {
         gooseTexture.dispose();
         winText.dispose();
         gameOver.dispose();
+        breadTexture.dispose();
     }
 }
