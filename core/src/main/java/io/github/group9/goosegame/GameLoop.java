@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 */
 
 import io.github.group9.goosegame.GeeseUtilities.GeeseSpawner;
+import io.github.group9.goosegame.Entities.Player;
+
 
 public class GameLoop {
 
@@ -36,7 +38,7 @@ public class GameLoop {
                 clock.start();
             }
         }
-        if ((state == GameState.ENDED || state == GameState.PAUSED) && input.restartPressed()) {
+        if ((state == GameState.WIN || state == GameState.LOSE || state == GameState.PAUSED) && input.restartPressed()) {
             restart();
         }
 
@@ -64,9 +66,16 @@ public class GameLoop {
     private void update(float deltaTime) {
         clock.update(deltaTime, world);
         if (clock.timeLeft <= 0) {
-            state = GameState.ENDED;
+            state = GameState.LOSE;
             return;
         }
+
+        // Player wins if item count is >= 1 (Replace with win condition)
+        if (Player.itemCount >= 1) {
+            state = GameState.WIN;
+            return;
+        }
+
         world.update(deltaTime, input.getInput());
     }
 

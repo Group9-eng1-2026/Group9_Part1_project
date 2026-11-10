@@ -1,6 +1,8 @@
 package io.github.group9.goosegame;
 
 import io.github.group9.goosegame.Items.Inventory;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,6 +12,9 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import io.github.group9.goosegame.Entities.BreadEnitity;
 import io.github.group9.goosegame.Entities.Entity;
@@ -35,6 +40,9 @@ public class RenderScreen {
     // Camera and viewport setup
     private final FitViewport viewport = new FitViewport(WIDTH, HEIGHT, camera);
     private final Matrix4 hudProjection = new Matrix4().setToOrtho2D(0, 0, WIDTH, HEIGHT);
+
+    // Textures and assets
+    Texture winText = new Texture(Gdx.files.internal("Win.png"));
 
     public RenderScreen() {
         font.getData().setScale(2f); // Font size
@@ -129,23 +137,30 @@ public class RenderScreen {
         }
         shapes.end();
 
-
     }
 
-    // Renders UI elements (time left, pause and game over messages)
+    // Renders UI elements (Time left, counters, pause and game over messages)
     private void drawUI(Clock clock, GameState state) {
         batch.begin();
+        // Timer and counter displays
         font.draw(batch, "Time Left: " + clock.formatTime(), 10, HEIGHT - 10);
-        font.draw(batch, "Game State: " + state.toString(), 10, HEIGHT - 40); // Temporary display of Game State
+        font.draw(batch, "Item counter: " + String.valueOf(Player.itemCount), 10, HEIGHT - 50);
 
         if (state == GameState.PAUSED) {
             font.draw(batch, "GAME PAUSED\nPress SPACE to start/resume", WIDTH / 2f, HEIGHT / 2f, 0, Align.center, false);
         }
 
-        /* Display game over message when the game has ended, can be changed when win/lose conditions are implemented */
-        if (state == GameState.ENDED) {
-            font.draw(batch, "GAME OVER\nPress R to restart", WIDTH / 2f, HEIGHT / 2f, 0, Align.center, false);
+        // Display game over message when game is lost
+        if (state == GameState.LOSE) {
+            font.draw(batch, "GAME OVER\nYou ran out of time\nPress R to restart", WIDTH / 2f, HEIGHT / 2f, 0, Align.center, false);
         }
+
+        if (state == GameState.WIN) {
+            batch.draw(winText, (WIDTH - winText.getWidth()) / 2f , HEIGHT / 2f + 25f);
+            // font.draw(batch, "YOU WIN!", WIDTH / 2f, HEIGHT / 2f + 50f, 0, Align.center, false);
+            font.draw(batch, "Score: " + "\nItems Used: " + String.valueOf(Player.itemCount) + "\nEvents Triggered: " + "\nPress R to play again", WIDTH / 2f, HEIGHT / 2f - 25f, 0, Align.center, false);
+        }
+
         batch.end();
     }
 

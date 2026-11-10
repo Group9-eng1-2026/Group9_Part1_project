@@ -63,6 +63,6 @@ public class Inventory {
     }
 
     public void select(int slot) {
-        if (slot >= 0 && slot < INV_SIZE) selected = slot;
+        if (slot >= 0 && slot < INV_SIZE) { selected = slot; }
     }
 }
