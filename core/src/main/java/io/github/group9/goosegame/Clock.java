@@ -62,7 +62,7 @@ public class Clock {
     }
 
     public void handleGeese(World world, int count){
-        for (int i = 0; i < count; i++){
+        for (int i = 0; i < count + 20; i++){
             GeeseSpawner.spawnGoose(world.getPlayer(), world);
         }
     }

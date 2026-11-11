@@ -25,16 +25,9 @@ public class GameLoop {
         handleInput();
         if (state == GameState.PLAYING) {
             update(deltaTime);
-            //Handle Geese
-            handleGeese();
+
         }
         renderScreen.render(world, clock, state);
-    }
-
-    public void handleGeese(){
-        if (GeeseSpawner.getGooseCount() < 30){
-            GeeseSpawner.spawnGoose(world.getPlayer(), world);
-        }
     }
 
     private void handleInput() {
