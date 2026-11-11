@@ -12,8 +12,8 @@ import java.util.List;
 public class Player extends Entity{
     public static final float SIZE = 32f;
     private static final float SPEED = 250f;
-    
-    public static int itemCount;
+
+    public static int itemCount = 0;
     public float exhaustion = 100; // Health bar
 
     private final Inventory inventory = new Inventory();
@@ -21,7 +21,6 @@ public class Player extends Entity{
 
     public Player(float x, float y) {
         super(x, y, SIZE, SPEED);
-        itemCount = 0;
     }
 
     public void update(float deltaTime, float dx, float dy, float worldWidth, float worldHeight) {
