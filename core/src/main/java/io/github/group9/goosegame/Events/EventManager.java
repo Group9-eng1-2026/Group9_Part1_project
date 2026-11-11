@@ -45,7 +45,7 @@ public class EventManager {
 
     public void update(World world){
         //Spawn events
-        if (events.size() < 20) {
+        if (events.size() < 5) {
             float x = random.nextFloat(World.WIDTH);
             float y = random.nextFloat(World.HEIGHT);
             int eventNum = random.nextInt(EventManager.EXISTING_EVENTS.length);
