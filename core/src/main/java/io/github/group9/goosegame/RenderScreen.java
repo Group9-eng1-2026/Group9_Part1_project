@@ -1,5 +1,8 @@
 package io.github.group9.goosegame;
 
+import io.github.group9.goosegame.Entities.*;
+import io.github.group9.goosegame.Events.HiddenEvent;
+import io.github.group9.goosegame.Events.Reload;
 import io.github.group9.goosegame.Items.Inventory;
 
 import com.badlogic.gdx.Gdx;
@@ -14,10 +17,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.graphics.Texture;
 
-import io.github.group9.goosegame.Entities.BreadEntity;
-import io.github.group9.goosegame.Entities.Entity;
-import io.github.group9.goosegame.Entities.Goose;
-import io.github.group9.goosegame.Entities.Player;
 import io.github.group9.goosegame.Items.Item;
 
 public class RenderScreen {
@@ -112,6 +111,18 @@ public class RenderScreen {
             batch.draw(gooseTexture, goose.pos.x - Goose.SIZE / 2f, goose.pos.y - Goose.SIZE / 2f, Goose.SIZE, Goose.SIZE * 27/18);
         }
         batch.end();
+
+        //Renders events
+        for (HiddenEvent i : world.eventManager.events) {
+            if (i instanceof Reload) {
+                shapes.begin(ShapeRenderer.ShapeType.Filled);
+                shapes.setColor(255, 0, 0, 1);
+                float x = i.entity.pos.x - EventEntity.SIZE / 2f;
+                float y = i.entity.pos.y - EventEntity.SIZE / 2f;
+                shapes.rect(x, y, EventEntity.SIZE, EventEntity.SIZE);
+                shapes.end();
+            }
+        }
     }
 
     // Draws inventory hotbar, selected slot is blue
@@ -189,7 +200,7 @@ public class RenderScreen {
         shapes.dispose();
         batch.dispose();
         font.dispose();
-        
+
         gooseTexture.dispose();
         winText.dispose();
         gameOver.dispose();

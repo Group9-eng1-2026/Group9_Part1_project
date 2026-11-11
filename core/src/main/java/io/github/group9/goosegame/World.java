@@ -1,5 +1,6 @@
 package io.github.group9.goosegame;
 
+import io.github.group9.goosegame.Events.EventManager;
 import io.github.group9.goosegame.Items.Bread;
 import io.github.group9.goosegame.Items.Item;
 import com.badlogic.gdx.math.Vector2;
@@ -20,6 +21,7 @@ public class World {
 
     private final Random random = new Random();
     private final Player player;
+    public EventManager eventManager = new EventManager();
     public List<Goose> geese = new ArrayList<>();
     public List<Item> items = new ArrayList<>();
     public List<Entity> itemEntities = new ArrayList<>();
@@ -42,6 +44,9 @@ public class World {
 
         //Items
         handleItems(deltaTime);
+
+        //Events
+        eventManager.update(this);
     }
 
     public void handleItems(float deltaTime){
