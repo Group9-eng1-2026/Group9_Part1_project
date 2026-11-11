@@ -15,6 +15,7 @@ public class Player extends Entity{
 
     public static int itemCount = 0;
     public float exhaustion = 100; // Health bar
+    public boolean faster = false;
 
     private final Inventory inventory = new Inventory();
     private final Vector2 facing = new Vector2(0, 1);
@@ -32,7 +33,10 @@ public class Player extends Entity{
             facing.set(direction);
         }
 
-        pos.mulAdd(direction, SPEED * deltaTime);
+        float speed = SPEED;
+        if (faster) { speed += 100f; }
+
+        pos.mulAdd(direction, speed * deltaTime);
 
         // Keeps player within world boundaries
         float half = SIZE / 2f;
@@ -63,6 +67,4 @@ public class Player extends Entity{
             goose.changeTarget(this);
         }
     }
-
-    public static int getItemCount() { return itemCount; }
 }

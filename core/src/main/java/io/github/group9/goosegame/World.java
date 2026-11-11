@@ -2,6 +2,7 @@ package io.github.group9.goosegame;
 
 import io.github.group9.goosegame.Events.EventManager;
 import io.github.group9.goosegame.Items.Bread;
+import io.github.group9.goosegame.Items.EnergyDrink;
 import io.github.group9.goosegame.Items.Item;
 import com.badlogic.gdx.math.Vector2;
 import io.github.group9.goosegame.Entities.Entity;
@@ -29,6 +30,7 @@ public class World {
     public World() {
         player = new Player(WIDTH / 2f, HEIGHT / 2f);
         player.getInventory().add(new Bread(), 3);
+        player.getInventory().add(new EnergyDrink(), 1);
     }
 
     public Player getPlayer() {
@@ -57,6 +59,9 @@ public class World {
                     itemEntities.remove(((Bread) item).entity);
                     toRemove.add(item);
                 }
+            }
+            if (item instanceof EnergyDrink) {
+                ((EnergyDrink) item).update(player, deltaTime);
             }
         }
         items.removeAll(toRemove);
@@ -89,7 +94,6 @@ public class World {
                         goose.changeTarget(new Player(nx, ny));
                         goose.update(deltaTime, 10f, 10f, WIDTH, HEIGHT);
                     }
-
                     goose.changeTarget(player);
                 }
             }

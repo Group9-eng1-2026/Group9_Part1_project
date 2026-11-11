@@ -49,7 +49,7 @@ public class EventManager {
             float x = random.nextFloat(World.WIDTH);
             float y = random.nextFloat(World.HEIGHT);
             int eventNum = random.nextInt(EventManager.EXISTING_EVENTS.length);
-            Class classToAdd = EXISTING_EVENTS[eventNum];
+            Class<?> classToAdd = EXISTING_EVENTS[eventNum];
             try {
                 Object toAdd = classToAdd.getDeclaredConstructor(float.class, float.class).newInstance(x, y);
                 HiddenEvent eventToAdd = (HiddenEvent) toAdd;
