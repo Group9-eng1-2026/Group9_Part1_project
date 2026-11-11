@@ -1,6 +1,5 @@
 package io.github.group9.goosegame;
 
-import io.github.group9.goosegame.Entities.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
@@ -27,12 +26,12 @@ public class GameLoop {
         if (state == GameState.PLAYING) {
             update(deltaTime);
             //Handle Geese
-            HandleGeese();
+            handleGeese();
         }
         renderScreen.render(world, clock, state);
     }
 
-    public void HandleGeese(){
+    public void handleGeese(){
         if (GeeseSpawner.getGooseCount() < 30){
             GeeseSpawner.spawnGoose(world.getPlayer(), world);
         }
