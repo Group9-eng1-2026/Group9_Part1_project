@@ -17,6 +17,7 @@ public class Reload extends HiddenEvent{
 
     @Override
     public void activate(World world) {
+        this.triggered = true;
         Inventory inv = world.getPlayer().getInventory();
         List<Item> items = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
