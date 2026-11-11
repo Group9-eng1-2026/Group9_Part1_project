@@ -1,6 +1,7 @@
 package io.github.group9.goosegame;
 
 import io.github.group9.goosegame.Entities.*;
+import io.github.group9.goosegame.Events.EventManager;
 import io.github.group9.goosegame.Events.HiddenEvent;
 import io.github.group9.goosegame.Events.Reload;
 import io.github.group9.goosegame.Items.Bread;
@@ -70,7 +71,7 @@ public class RenderScreen {
 
         drawWorld(world);
         drawInventory(player.getInventory());
-        drawUI(clock, state);
+        drawUI(clock, state, world.eventManager);
     }
 
 
@@ -174,12 +175,13 @@ public class RenderScreen {
     }
 
     // Renders UI elements (Time left, counters, pause and game over messages)
-    private void drawUI(Clock clock, GameState state) {
+    private void drawUI(Clock clock, GameState state, EventManager eventManager) {
         batch.setProjectionMatrix(hudProjection);
         batch.begin();
         // Timer and counter displays
         font.draw(batch, "Time Left: " + clock.formatTime(), 10, HEIGHT - 10);
         font.draw(batch, "Item counter: " + Player.itemCount, 10, HEIGHT - 50);
+        font.draw(batch, "Events Triggered: " + eventManager.getEventsTriggered(), 10, HEIGHT - 90);
 
         if (state == GameState.PAUSED) {
             font.draw(batch, "GAME PAUSED\nPress SPACE to start/resume", WIDTH / 2f, HEIGHT / 2f, 0, Align.center, false);
