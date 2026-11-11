@@ -19,8 +19,11 @@ public class EnergyDrink extends Item {
         return true;
     }
 
-    public void update(Player player, float delta) {
-        if (duration <= 0) { player.faster = false;}
+    public boolean update(Player player, float delta) {
+        if (duration <= 0) {
+            player.faster = false; return true;
+        }
         duration -= delta;
+        return false;
     }
 }

@@ -57,11 +57,16 @@ public class World {
             if (item instanceof Bread) {
                 if (!(((Bread) item).update(geese, player, deltaTime))){
                     itemEntities.remove(((Bread) item).entity);
+                    if (random.nextInt(3, 10) > 0) {
+                        geese.subList(0, random.nextInt(3, 10)).clear();
+                    }
                     toRemove.add(item);
                 }
             }
             if (item instanceof EnergyDrink) {
-                ((EnergyDrink) item).update(player, deltaTime);
+                if(((EnergyDrink) item).update(player, deltaTime)) {
+                    toRemove.add(item);
+                }
             }
         }
         items.removeAll(toRemove);
