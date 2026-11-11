@@ -34,7 +34,7 @@ public class Player extends Entity{
         }
 
         float speed = SPEED;
-        if (faster) { speed += 100f; }
+        if (faster) { speed += 200f; }
 
         pos.mulAdd(direction, speed * deltaTime);
 

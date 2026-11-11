@@ -3,6 +3,8 @@ package io.github.group9.goosegame;
 import io.github.group9.goosegame.Entities.*;
 import io.github.group9.goosegame.Events.HiddenEvent;
 import io.github.group9.goosegame.Events.Reload;
+import io.github.group9.goosegame.Items.Bread;
+import io.github.group9.goosegame.Items.EnergyDrink;
 import io.github.group9.goosegame.Items.Inventory;
 
 import com.badlogic.gdx.Gdx;
@@ -45,6 +47,7 @@ public class RenderScreen {
 
     Texture gooseTexture = new Texture(Gdx.files.internal("Goose.png")); // 18x27
     Texture breadTexture = new Texture(Gdx.files.internal("Bread.png")); // 24x24
+    Texture drinkTexture = new Texture(Gdx.files.internal("Drink.png"));
 
     public RenderScreen() {
         font.getData().setScale(2f); // Font size
@@ -156,7 +159,12 @@ public class RenderScreen {
             float x = startX + i * (SLOT_SIZE + GAP);
             Item item = inventory.getItem(i);
             if (item != null) {
-                batch.draw(breadTexture, x + 8f, y + 8f, 48f, 48f);
+                if (item instanceof Bread) {
+                    batch.draw(breadTexture, x + 8f, y + 8f, 48f, 48f);
+                }
+                if (item instanceof EnergyDrink) {
+                    batch.draw(drinkTexture,  x + 8f, y + 8f, 48f, 48f);
+                }
                 if (inventory.getCount(i) > 1) {
                     font.draw(batch, String.valueOf(inventory.getCount(i)), x, y + SLOT_SIZE - 5f, SLOT_SIZE - 5f, Align.right, false);
                 }
@@ -171,7 +179,7 @@ public class RenderScreen {
         batch.begin();
         // Timer and counter displays
         font.draw(batch, "Time Left: " + clock.formatTime(), 10, HEIGHT - 10);
-        font.draw(batch, "Item counter: " + String.valueOf(Player.itemCount), 10, HEIGHT - 50);
+        font.draw(batch, "Item counter: " + Player.itemCount, 10, HEIGHT - 50);
 
         if (state == GameState.PAUSED) {
             font.draw(batch, "GAME PAUSED\nPress SPACE to start/resume", WIDTH / 2f, HEIGHT / 2f, 0, Align.center, false);
