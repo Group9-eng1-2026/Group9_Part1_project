@@ -12,16 +12,16 @@ import java.util.List;
 public class Player extends Entity{
     public static final float SIZE = 32f;
     private static final float SPEED = 250f;
-    
-    public static int itemCount;
+
+    public static int itemCount = 0;
     public float exhaustion = 100; // Health bar
+    public boolean faster = false;
 
     private final Inventory inventory = new Inventory();
     private final Vector2 facing = new Vector2(0, 1);
 
     public Player(float x, float y) {
         super(x, y, SIZE, SPEED);
-        itemCount = 0;
     }
 
     public void update(float deltaTime, float dx, float dy, float worldWidth, float worldHeight) {
@@ -33,7 +33,10 @@ public class Player extends Entity{
             facing.set(direction);
         }
 
-        pos.mulAdd(direction, SPEED * deltaTime);
+        float speed = SPEED;
+        if (faster) { speed += 200f; }
+
+        pos.mulAdd(direction, speed * deltaTime);
 
         // Keeps player within world boundaries
         float half = SIZE / 2f;
@@ -64,6 +67,4 @@ public class Player extends Entity{
             goose.changeTarget(this);
         }
     }
-
-    public static int getItemCount() { return itemCount; }
 }
