@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 */
 
 import io.github.group9.goosegame.GeeseUtilities.GeeseSpawner;
+import io.github.group9.goosegame.Entities.Player;
 
 public class GameLoop {
 
@@ -64,6 +65,7 @@ public class GameLoop {
         clock.reset();
         state = GameState.PAUSED;
         GeeseSpawner.reset();
+        Player.itemCount = 0;
     }
 
     // Updates clock, ends game when timer reaches 0

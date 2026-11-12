@@ -43,12 +43,13 @@ public class RenderScreen {
     private final Matrix4 hudProjection = new Matrix4().setToOrtho2D(0, 0, WIDTH, HEIGHT);
 
     // Textures and assets, including dimensions in pixels
+    Texture mapTexture = new Texture(Gdx.files.internal("Map.png")); // 480x320
     Texture winText = new Texture(Gdx.files.internal("Win.png")); // 47x25
     Texture gameOver = new Texture(Gdx.files.internal("GameOver.png")); // 27x19
 
     Texture gooseTexture = new Texture(Gdx.files.internal("Goose.png")); // 18x27
     Texture breadTexture = new Texture(Gdx.files.internal("Bread.png")); // 24x24
-    Texture drinkTexture = new Texture(Gdx.files.internal("Drink.png"));
+    Texture drinkTexture = new Texture(Gdx.files.internal("Drink.png")); // 24x24
 
     public RenderScreen() {
         font.getData().setScale(2f); // Font size
@@ -78,18 +79,15 @@ public class RenderScreen {
     private void drawWorld(World world) {
         Player p = world.getPlayer();
 
-        // Renders map background (currently green rectangle)
         shapes.begin(ShapeRenderer.ShapeType.Filled);
-        shapes.setColor(0.2f, 0.5f, 0.2f, 1f);
+        shapes.setColor(0.52f, 0.78f, 0.41f, 1f);
         shapes.rect(0,0, World.WIDTH, World.HEIGHT);
         shapes.end();
 
-        // Grid lines to help see movement, can be removed after assets are added
-        shapes.begin(ShapeRenderer.ShapeType.Line);
-        shapes.setColor(0.4f, 0.7f, 0.4f, 1f);
-        for (float x = 0; x <= World.WIDTH; x += GRID) shapes.line(x, 0, x, World.HEIGHT);
-        for (float y = 0; y <= World.HEIGHT; y += GRID) shapes.line(0, y, World.WIDTH, y);
-        shapes.end();
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(mapTexture, 0, 0, World.WIDTH, World.HEIGHT);
+        batch.end();
 
         //Renders Items
         batch.setProjectionMatrix(camera.combined);
@@ -215,5 +213,7 @@ public class RenderScreen {
         winText.dispose();
         gameOver.dispose();
         breadTexture.dispose();
+        drinkTexture.dispose();
+        mapTexture.dispose();
     }
 }

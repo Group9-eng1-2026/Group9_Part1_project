@@ -10,7 +10,6 @@ public class Clock {
     public float nextWaveTime = 0f;
     public boolean running = false;
 
-    //
     public void update(float deltaTime, World world) {
         if (running) {
             timeLeft -= deltaTime;
