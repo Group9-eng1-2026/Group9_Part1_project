@@ -1,6 +1,7 @@
 package io.github.group9.goosegame;
 
 import io.github.group9.goosegame.Events.EventManager;
+import io.github.group9.goosegame.GeeseUtilities.GeeseSpawner;
 import io.github.group9.goosegame.Items.Bread;
 import io.github.group9.goosegame.Items.EnergyDrink;
 import io.github.group9.goosegame.Items.Item;
@@ -59,6 +60,7 @@ public class World {
                     itemEntities.remove(((Bread) item).entity);
                     if (random.nextInt(3, 10) > 0) {
                         geese.subList(0, random.nextInt(3, 10)).clear();
+                        GeeseSpawner.geeseDispersed++;
                     }
                     toRemove.add(item);
                 }

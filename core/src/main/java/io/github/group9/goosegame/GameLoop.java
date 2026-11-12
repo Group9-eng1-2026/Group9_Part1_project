@@ -76,8 +76,8 @@ public class GameLoop {
             return;
         }
 
-        // Player wins if item count is >= 1 (Replace with win condition)
-        if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
+        // Player wins if dispersed 150 Geese.
+        if (GeeseSpawner.geeseDispersed >= 150) {
             state = GameState.WIN;
             return;
         }
