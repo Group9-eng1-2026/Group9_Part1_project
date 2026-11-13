@@ -83,8 +83,10 @@ public class World {
         for (Goose goose : this.geese){
             //Check intersections with player
             if (goose.intersects(player)) {
-                player.exhaustion -= 10;
-                //Creates wait time until 10,000 frames have passed before goose can once again move
+                if (goose.recovering == 0) {
+                    player.exhaustion -= 10;
+                }
+                //Creates wait time until 3s have passed before goose can once again move
                 goose.recovering = 3f;
             }
 
