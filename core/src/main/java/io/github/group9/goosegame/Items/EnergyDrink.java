@@ -4,9 +4,11 @@ import io.github.group9.goosegame.Entities.Player;
 import io.github.group9.goosegame.World;
 
 public class EnergyDrink extends Item {
-    private float duration = 3f;
+    private static float START_DURATION = 3f;
+    private float duration;
     public EnergyDrink() {
         super("Energy Drink");
+        this.duration = START_DURATION;
     }
 
     @Override
@@ -20,10 +22,10 @@ public class EnergyDrink extends Item {
     }
 
     public boolean update(Player player, float delta) {
-        if (duration <= 0) {
+        if (this.duration <= 0) {
             player.faster = false; return true;
         }
-        duration -= delta;
+        this.duration -= delta;
         return false;
     }
 }
