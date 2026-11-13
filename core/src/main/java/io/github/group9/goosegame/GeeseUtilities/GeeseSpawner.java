@@ -10,6 +10,7 @@ import java.util.Random;
  * Class that handles the spawning of geese
  */
 public class GeeseSpawner {
+    public static int geeseDispersed = 0;
     private static int gooseCount = 0;
     private static Random random = new Random();
 

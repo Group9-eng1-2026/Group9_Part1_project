@@ -1,6 +1,7 @@
 package io.github.group9.goosegame;
 
 import io.github.group9.goosegame.Events.EventManager;
+import io.github.group9.goosegame.GeeseUtilities.GeeseSpawner;
 import io.github.group9.goosegame.Items.Bread;
 import io.github.group9.goosegame.Items.EnergyDrink;
 import io.github.group9.goosegame.Items.Item;
@@ -12,6 +13,8 @@ import io.github.group9.goosegame.Entities.Goose;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static java.lang.Math.min;
 
 // Represents everything that exists in the game world
 // Geese, items and hidden events will have to be added here later
@@ -58,7 +61,10 @@ public class World {
                 if (!(((Bread) item).update(geese, player, deltaTime))){
                     itemEntities.remove(((Bread) item).entity);
                     if (random.nextInt(3, 10) > 0) {
-                        geese.subList(0, random.nextInt(3, 10)).clear();
+                        int max = random.nextInt(3, 10);
+                        max = min(max, geese.size());
+                        geese.subList(0, max).clear();
+                        GeeseSpawner.geeseDispersed++;
                     }
                     toRemove.add(item);
                 }
@@ -77,8 +83,10 @@ public class World {
         for (Goose goose : this.geese){
             //Check intersections with player
             if (goose.intersects(player)) {
-                player.exhaustion -= 10;
-                //Creates wait time until 10,000 frames have passed before goose can once again move
+                if (goose.recovering == 0) {
+                    player.exhaustion -= 10;
+                }
+                //Creates wait time until 3s have passed before goose can once again move
                 goose.recovering = 3f;
             }
 

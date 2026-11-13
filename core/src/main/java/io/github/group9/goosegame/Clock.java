@@ -42,6 +42,8 @@ public class Clock {
     // Resets clock to 5 mins and pauses
     public void reset() {
         timeLeft = totalTime;
+        nextWaveTime = 0f;
+        wave = 1;
         running = false;
     }
 
