@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static java.lang.Math.min;
+
 // Represents everything that exists in the game world
 // Geese, items and hidden events will have to be added here later
 public class World {
@@ -59,7 +61,9 @@ public class World {
                 if (!(((Bread) item).update(geese, player, deltaTime))){
                     itemEntities.remove(((Bread) item).entity);
                     if (random.nextInt(3, 10) > 0) {
-                        geese.subList(0, random.nextInt(3, 10)).clear();
+                        int max = random.nextInt(3, 10);
+                        max = min(max, geese.size());
+                        geese.subList(0, max).clear();
                         GeeseSpawner.geeseDispersed++;
                     }
                     toRemove.add(item);
