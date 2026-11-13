@@ -76,6 +76,12 @@ public class GameLoop {
             return;
         }
 
+        //If player exhaustion 0 or less make them loose.
+        if (world.getPlayer().exhaustion <= 0) {
+            state = GameState.LOSE;
+            return;
+        }
+
         // Player wins if dispersed 150 Geese.
         if (GeeseSpawner.geeseDispersed >= 50) {
             state = GameState.WIN;
