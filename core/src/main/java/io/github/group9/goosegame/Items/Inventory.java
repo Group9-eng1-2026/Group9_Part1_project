@@ -7,10 +7,14 @@ public class Inventory {
     private final int[] counts = new int[INV_SIZE];
     private int selected = 0;
 
-    /* Adds item to stack if same item is already in inventory,
-        or adds to first available free space*/
+    /** 
+     * Adds item to first free space in the inventory, or adds 1 to 
+     * the item count if the same item is already in the inventory
+     * @param item Item being added to the inventory
+     * @return True if the item was added, False if the inventory is full
+     */
     public boolean add(Item item, int amount) {
-        if (amount <= 0) return true;
+        if (item == null || amount <= 0) return false;
 
         for (int i = 0; i < INV_SIZE; i++) {
             if (items[i] != null && items[i].getName().equals(item.getName())) {
@@ -38,17 +42,13 @@ public class Inventory {
         return counts[slot];
     }
 
-    // Returns item in selected slot
-    public Item getSelected() {
-        return items[selected];
-    }
+    /** Returns item in the selected slot */
+    public Item getSelected() { return items[selected]; }
 
-    // Returns number of items in selected slot
-    public int getSelectedCount() {
-        return counts[selected];
-    }
+    /** Returns number of items in selected slot */
+    public int getSelectedCount() { return counts[selected]; }
 
-    // Removes one item from the selected slot, empties slot when it reaches 0
+    /** Removes one item from the selected slot, empties slot when it reaches 0 */
     public void removeSelected() {
         if (items[selected] == null) return;
         counts[selected]--;
@@ -58,9 +58,7 @@ public class Inventory {
         }
     }
 
-    public int getSelectedSlot() {
-        return selected;
-    }
+    public int getSelectedSlot() { return selected; }
 
     public void select(int slot) {
         if (slot >= 0 && slot < INV_SIZE) { selected = slot; }

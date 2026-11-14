@@ -1,12 +1,10 @@
 package io.github.group9.goosegame;
 
 import io.github.group9.goosegame.Entities.*;
+import io.github.group9.goosegame.Items.*;
 import io.github.group9.goosegame.Events.EventManager;
 import io.github.group9.goosegame.Events.HiddenEvent;
 import io.github.group9.goosegame.Events.Reload;
-import io.github.group9.goosegame.Items.Bread;
-import io.github.group9.goosegame.Items.EnergyDrink;
-import io.github.group9.goosegame.Items.Inventory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -20,13 +18,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.graphics.Texture;
 
-import io.github.group9.goosegame.Items.Item;
-
+/** Draws the game on the screen */
 public class RenderScreen {
     // Screen dimensions and grid
     private final float WIDTH = 1024f;
     private final float HEIGHT = 768f;
-    private final float GRID = 100f;
 
     // Inventory dimensions
     private final float SLOT_SIZE = 64f;
@@ -42,7 +38,7 @@ public class RenderScreen {
     private final FitViewport viewport = new FitViewport(WIDTH, HEIGHT, camera);
     private final Matrix4 hudProjection = new Matrix4().setToOrtho2D(0, 0, WIDTH, HEIGHT);
 
-    // Textures and assets, including dimensions in pixels
+    // Textures, including dimensions in pixels
     Texture mapTexture = new Texture(Gdx.files.internal("Map.png")); // 480x320
     Texture winText = new Texture(Gdx.files.internal("Win.png")); // 47x25
     Texture gameOver = new Texture(Gdx.files.internal("GameOver.png")); // 27x19
@@ -51,11 +47,18 @@ public class RenderScreen {
     Texture breadTexture = new Texture(Gdx.files.internal("Bread.png")); // 24x24
     Texture drinkTexture = new Texture(Gdx.files.internal("Drink.png")); // 24x24
 
+    // Constructor
     public RenderScreen() {
         font.getData().setScale(2f); // Font size
         font.setColor(0, 0, 0, 1);
     }
 
+    /** 
+     * Renders one frame
+     * @param world The world to render
+     * @param clock The game timer
+     * @param state The current game state
+     */
     public void render(World world, Clock clock, GameState state) {
         ScreenUtils.clear(0f, 0f, 0f, 1f);
         viewport.apply();
@@ -75,23 +78,22 @@ public class RenderScreen {
         drawUI(clock, state, world.eventManager);
     }
 
-
+    /** Draws the game world, including the map, player, geese, items, and events */
     private void drawWorld(World world) {
         Player p = world.getPlayer();
 
+        // Green background to fill in transparent parts of the map texture
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.setColor(0.52f, 0.78f, 0.41f, 1f);
         shapes.rect(0,0, World.WIDTH, World.HEIGHT);
         shapes.end();
 
+        // Background map texture
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         batch.draw(mapTexture, 0, 0, World.WIDTH, World.HEIGHT);
-        batch.end();
 
-        //Renders Items
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
+        // Renders Items
         for (Entity itemEntity : world.itemEntities) {
             if (itemEntity instanceof BreadEntity) {
                 float x = ((Entity) (BreadEntity) itemEntity).pos.x - BreadEntity.SIZE / 2f;
@@ -101,20 +103,20 @@ public class RenderScreen {
         }
         batch.end();
 
-        // Renders player (currently black rectangle)
+        // Renders player (black rectangle)
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.setColor(0, 0, 0, 1);
         shapes.rect(p.pos.x - Player.SIZE / 2f, p.pos.y - Player.SIZE / 2f, Player.SIZE, Player.SIZE);
         shapes.end();
 
-        //Renders Geese
+        // Renders Geese
         batch.begin();
         for (Goose goose : world.geese) {
             batch.draw(gooseTexture, goose.pos.x - Goose.SIZE / 2f, goose.pos.y - Goose.SIZE / 2f, Goose.SIZE, Goose.SIZE * 27/18);
         }
         batch.end();
 
-        //Renders events
+        // Renders events (red squares)
         for (HiddenEvent i : world.eventManager.events) {
             shapes.begin(ShapeRenderer.ShapeType.Filled);
             shapes.setColor(255, 0, 0, 1);
@@ -125,14 +127,14 @@ public class RenderScreen {
         }
     }
 
-    // Draws inventory hotbar, selected slot is blue
+    /** Draws the inventory hotbar, highlighting the selected slot in blue */
     private void drawInventory(Inventory inventory) {
         float totalWidth = Inventory.INV_SIZE * SLOT_SIZE + (Inventory.INV_SIZE - 1) * GAP;
         float startX = (WIDTH - totalWidth) / 2f;
         float y = 20f;
         shapes.setProjectionMatrix(hudProjection);
 
-        // Inventory backgrounds,
+        // Slot backgrounds,
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         for (int i = 0; i < Inventory.INV_SIZE; i++) {
             if (i == inventory.getSelectedSlot()) shapes.setColor(0.4f, 0.7f, 0.8f, 1f); // Makes selected slot blue
@@ -141,7 +143,7 @@ public class RenderScreen {
         }
         shapes.end();
 
-        // Inventory slot outlines
+        // Slot outlines
         shapes.begin(ShapeRenderer.ShapeType.Line);
         shapes.setColor(0.1f, 0.1f, 0.1f, 1f);
         for (int i = 0; i < Inventory.INV_SIZE; i++) {
@@ -170,7 +172,12 @@ public class RenderScreen {
         batch.end();
     }
 
-    // Renders UI elements (Time left, counters, pause and game over messages)
+    /** 
+     * Renders UI elements (timer, counters, game state messages)
+     * @param clock Used for time left countdown
+     * @param state Used for game state messages (paused, win, lose)
+     * @param eventManager Used for events triggered counter
+     */
     private void drawUI(Clock clock, GameState state, EventManager eventManager) {
         batch.setProjectionMatrix(hudProjection);
         batch.begin();
@@ -183,7 +190,7 @@ public class RenderScreen {
             font.draw(batch, "GAME PAUSED\nPress SPACE to start/resume", WIDTH / 2f, HEIGHT / 2f, 0, Align.center, false);
         }
 
-        // Display game over message when game is lost
+        // Game over messages
         if (state == GameState.LOSE) {
             batch.draw(gameOver, (WIDTH - gameOver.getWidth())/2, HEIGHT/2 + 25f);
             if (clock.timeLeft <= 0) {
@@ -193,6 +200,7 @@ public class RenderScreen {
             }
         }
 
+        // Win message
         if (state == GameState.WIN) {
             batch.draw(winText, (WIDTH - winText.getWidth()) / 2f , HEIGHT / 2f + 25f);
             // font.draw(batch, "YOU WIN!", WIDTH / 2f, HEIGHT / 2f + 50f, 0, Align.center, false);
@@ -202,6 +210,7 @@ public class RenderScreen {
         batch.end();
     }
 
+    /** Updates the screen size and viewport when the window is resized */
     public void resize(int width, int height) {
         viewport.update(width, height, true);
     }

@@ -1,26 +1,18 @@
 package io.github.group9.goosegame;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-
-
-/* Add when textures are implemented:
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-*/
-
 import io.github.group9.goosegame.GeeseUtilities.GeeseSpawner;
 import io.github.group9.goosegame.Entities.Player;
 
+/* Main game controller */
 public class GameLoop {
-
+    // Attributes
+    private GameState state = GameState.PAUSED; // Game starts paused
     private World world = new World();
     private Clock clock = new Clock();
     private final UserInput input = new UserInput();
     private final RenderScreen renderScreen = new RenderScreen();
 
-    private GameState state = GameState.PAUSED; // Game start paused
-
+    /** Renders one frame of the game */
     public void render(float deltaTime) {
         //Handle player
         handleInput();
@@ -31,6 +23,10 @@ public class GameLoop {
         renderScreen.render(world, clock, state);
     }
 
+    /** 
+     * Controls actions done in response to user input, inlcuding:
+     * pausing, unpausing, restarting and inventory slots 
+     */
     private void handleInput() {
         // Pauses and unpauses the game when spacebar is pressed
         if (input.pausePressed()) {
@@ -59,7 +55,7 @@ public class GameLoop {
         }
     }
 
-    // Resets the game state, world, and clock to start a new game
+    /** Resets the game state, world, and clock to start a new game */
     private void restart() {
         world = new World();
         clock.reset();
@@ -68,7 +64,7 @@ public class GameLoop {
         Player.itemCount = 0;
     }
 
-    // Updates clock, ends game when timer reaches 0
+    /** Updates the clock and ends game when the timer reaches 0 */
     private void update(float deltaTime) {
         clock.update(deltaTime, world);
         if (clock.timeLeft <= 0) {
