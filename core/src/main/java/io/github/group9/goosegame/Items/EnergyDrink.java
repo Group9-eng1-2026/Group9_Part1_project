@@ -18,6 +18,7 @@ public class EnergyDrink extends Item {
         if (player.faster) { return false; }
         this.duration = START_DURATION;
         player.faster = true;
+        player.exhaustion += 20;
         return true;
     }
 

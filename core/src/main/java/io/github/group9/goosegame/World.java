@@ -78,7 +78,7 @@ public class World {
                         int max = random.nextInt(3, 10);
                         max = min(max, geese.size());
                         geese.removeAll(((Bread) item).closestGeese(geese, max)); // Removes the geese closest to the bread
-                        GeeseSpawner.geeseDispersed++;
+                        GeeseSpawner.geeseDispersed += max;
                     }
                     toRemove.add(item);
                 }

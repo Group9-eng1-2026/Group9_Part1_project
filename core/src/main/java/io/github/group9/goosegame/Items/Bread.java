@@ -17,7 +17,7 @@ public class Bread extends Item{
     //Constants
     public static final float THROW_DISTANCE = 250f;
     //Lifetime in seconds
-    public static final float START_LIFETIME = 3f;
+    public static final float START_LIFETIME = 4f;
 
     //Attributes
     private float lifeTime;

@@ -78,8 +78,8 @@ public class GameLoop {
             return;
         }
 
-        // Player wins if dispersed 150 Geese.
-        if (GeeseSpawner.geeseDispersed >= 50) {
+        // Player wins if enough geese are dispersed.
+        if (GeeseSpawner.geeseDispersed >= GeeseSpawner.dispersedTarget) {
             state = GameState.WIN;
             return;
         }
