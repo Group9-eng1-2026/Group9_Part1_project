@@ -7,8 +7,8 @@ import io.github.group9.goosegame.Entities.Goose;
 import io.github.group9.goosegame.Entities.Player;
 import io.github.group9.goosegame.World;
 
+import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * Class that represents bread Item.
@@ -17,7 +17,7 @@ public class Bread extends Item{
     //Constants
     public static final float THROW_DISTANCE = 250f;
     //Lifetime in seconds
-    public static final float START_LIFETIME = 3f;
+    public static final float START_LIFETIME = 4f;
 
     //Attributes
     private float lifeTime;
@@ -39,17 +39,13 @@ public class Bread extends Item{
     @Override
     public boolean use(Player player, World world) {
         //If player has none reject
-        if (player.getInventory().getSelectedCount() == 0) {
-            return false;
-        }
+        if (player.getInventory().getSelectedCount() == 0) { return false; }
 
         //If bread already deployed reject
-        if (world.items.contains(player.getInventory().getSelected())) {
-            return false;
-        }
+        if (world.items.contains(player.getInventory().getSelected())) { return false; }
 
         Vector2 playerPos = new Vector2(player.pos.x, player.pos.y);
-        Vector2 thisPos = playerPos.add(player.getFacing().scl(THROW_DISTANCE));
+        Vector2 thisPos = playerPos.add(player.getFacing().cpy().scl(THROW_DISTANCE));
         float nx = MathUtils.clamp(thisPos.x, BreadEntity.SIZE / 2f, World.WIDTH);
         float ny = MathUtils.clamp(thisPos.y, BreadEntity.SIZE / 2f, World.HEIGHT);
         this.position = new Vector2(nx, ny);
@@ -57,6 +53,18 @@ public class Bread extends Item{
         this.entity = new BreadEntity(position);
         world.itemEntities.add(entity);
         return true;
+    }
+
+    /** 
+     * Finds geese closest to the bread.
+     * @param geese Geese to search through.
+     * @param count Maximum number of geese to return.
+     * @return Sorted list of the geese closest to the bread.
+     */
+    public List<Goose> closestGeese(List<Goose> geese, int count) {
+        List<Goose> sorted = new ArrayList<>(geese);
+        sorted.sort((a, b) -> Float.compare(a.pos.dst2(entity.pos), b.pos.dst2(entity.pos)));
+        return sorted.subList(0, Math.min(count, sorted.size()));
     }
 
     /**
@@ -75,7 +83,8 @@ public class Bread extends Item{
         }
 
         if (lifeTime >= 0) {
-            entity.distract(geese);
+            player.makeTargetOf(geese);
+            entity.distract(closestGeese(geese, 10)); // Distracts the 10 closest geese
             return true;
         } else {
             player.makeTargetOf(geese);

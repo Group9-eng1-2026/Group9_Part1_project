@@ -2,7 +2,7 @@ package io.github.group9.goosegame;
 
 import io.github.group9.goosegame.GeeseUtilities.GeeseSpawner;
 
-// Counts down 5 minute timer, only ticks when update() is called.
+/** Counts down a 5-minute timer, only ticking when update() is called. */
 public class Clock {
     static final float totalTime = 300f;
     public float timeLeft = totalTime;
@@ -10,6 +10,11 @@ public class Clock {
     public float nextWaveTime = 0f;
     public boolean running = false;
 
+    /** 
+     * Updates the clock, decrementing the time left each second and handles geese spawn waves.
+     * @param deltaTime Time since last frame in seconds.
+     * @param world Used to spawn geese when the next wave is due.
+     */
     public void update(float deltaTime, World world) {
         if (running) {
             timeLeft -= deltaTime;
@@ -27,6 +32,7 @@ public class Clock {
         nextWaveTime -= deltaTime;
     }
 
+    
     public boolean isRunning() {
         return running;
     }
@@ -62,6 +68,11 @@ public class Clock {
         return String.format("%02d:%02d", minutes, seconds);
     }
 
+    /** 
+     * Spawns a wave of geese near the player
+     * @param world Used to spawn geese and access the player
+     * @param count Number of geese to spawn + 20
+     */
     public void handleGeese(World world, int count){
         for (int i = 0; i < count + 20; i++){
             GeeseSpawner.spawnGoose(world.getPlayer(), world);

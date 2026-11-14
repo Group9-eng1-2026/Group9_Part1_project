@@ -16,36 +16,46 @@ import java.util.Random;
 
 import static java.lang.Math.min;
 
-// Represents everything that exists in the game world
-// Geese, items and hidden events will have to be added here later
+/** Holds everything in the game world, including:
+ *  the player, geese, items and events
+ */
 public class World {
+    // Constants
+    public static final float SEPARATE = 2f;
     // World dimensions
     public static final float WIDTH = 3200f;
     public static final float HEIGHT = 1800f;
-
-    private final Random random = new Random();
-    private final Player player;
-    public EventManager eventManager = new EventManager();
+    
+    // Lists of entities in the world
     public List<Goose> geese = new ArrayList<>();
     public List<Item> items = new ArrayList<>();
     public List<Entity> itemEntities = new ArrayList<>();
 
+    private final Random random = new Random();
+    private final Player player;
+    public EventManager eventManager = new EventManager();
+
+    // Constructor
     public World() {
         player = new Player(WIDTH / 2f, HEIGHT / 2f);
+        // Add initial items to the inventory
         player.getInventory().add(new Bread(), 3);
         player.getInventory().add(new EnergyDrink(), 1);
     }
 
-    public Player getPlayer() {
-        return player;
-    }
+    public Player getPlayer() { return player; }
 
+    /** 
+     * Updates the player, geese, items and events for each frame
+     * @param deltaTime Time since the last frame
+     * @param movement Player's movement direction
+     */
     public void update(float deltaTime, Vector2 movement) {
         //Player
         player.update(deltaTime, movement.x, movement.y, WIDTH, HEIGHT);
 
         //Geese
-        handleGeese(deltaTime, movement);
+        handleGeese(deltaTime);
 
         //Items
         handleItems(deltaTime);
@@ -54,6 +64,10 @@ public class World {
         eventManager.update(this);
     }
 
+    /** 
+     * Updates active items and removes the ones that are finished
+     * @param deltaTime Time since the last frame
+     */
     public void handleItems(float deltaTime){
         List<Item> toRemove = new ArrayList<>();
         for (Item item : items) {
@@ -63,8 +77,8 @@ public class World {
                     if (random.nextInt(3, 10) > 0) {
                         int max = random.nextInt(3, 10);
                         max = min(max, geese.size());
-                        geese.subList(0, max).clear();
-                        GeeseSpawner.geeseDispersed++;
+                        geese.removeAll(((Bread) item).closestGeese(geese, max)); // Removes the geese closest to the bread
+                        GeeseSpawner.geeseDispersed += max;
                     }
                     toRemove.add(item);
                 }
@@ -78,14 +92,17 @@ public class World {
         items.removeAll(toRemove);
     }
 
-    public void handleGeese(float deltaTime, Vector2 movement) {
+    /** 
+     * Handles geese movement and collisions with the player and other geese
+     * @param deltaTime Time since the last frame
+     */
+    public void handleGeese(float deltaTime) {
+        Vector2 separate = new Vector2();
         //Geese Collisions
         for (Goose goose : this.geese){
-            //Check intersections with player
-            if (goose.intersects(player)) {
-                if (goose.recovering == 0) {
-                    player.exhaustion -= 10;
-                }
+            //If goose collides with the player, decrease player's exhaustion by 10
+            if (goose.intersects(player) && goose.recovering <= 0) {
+                player.exhaustion -= 10;
                 //Creates wait time until 3s have passed before goose can once again move
                 goose.recovering = 3f;
             }
@@ -95,20 +112,13 @@ public class World {
 
             //Check for collisions with other geese
             for (Goose other : this.geese) {
-                //Skip if both are same
-                if (other == goose) { continue; }
+                //Skip if both are same or if they aren't colliding
+                if (other == goose || !goose.intersects(other)) { continue; }
 
-                if (other.intersects(goose)) {
-                    //Ensure no longer collides with other goose
-                    while (goose.intersects(other)){
-                        float nx = goose.pos.x + 50f;
-                        float ny = goose.pos.y + 50f;
-                        if (random.nextBoolean()) { nx *= -1; ny *= -1; }
-                        goose.changeTarget(new Player(nx, ny));
-                        goose.update(deltaTime, 10f, 10f, WIDTH, HEIGHT);
-                    }
-                    goose.changeTarget(player);
-                }
+                //Push goose away from the one it overlaps
+                separate.set(goose.pos).sub(other.pos);
+                if (separate.isZero()) { separate.setToRandomDirection(); }
+                goose.pos.mulAdd(separate.nor(), SEPARATE);
             }
         }
     }

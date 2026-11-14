@@ -11,6 +11,7 @@ import java.util.Random;
  */
 public class GeeseSpawner {
     public static int geeseDispersed = 0;
+    public static int dispersedTarget = 50;
     private static int gooseCount = 0;
     private static Random random = new Random();
 
@@ -32,5 +33,12 @@ public class GeeseSpawner {
 
     public static int getGooseCount() { return gooseCount; }
 
-    public static void reset() { gooseCount = 0; }
+    public static int getGeeseLeft() {
+        return Math.max(0, dispersedTarget - geeseDispersed);
+    }
+
+    public static void reset() { 
+        gooseCount = 0;
+        geeseDispersed = 0;
+    }
 }

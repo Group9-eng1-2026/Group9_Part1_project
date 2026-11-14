@@ -4,10 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 
+/** Reads user input from keyboard and returns movement direction and actions */
 public class UserInput {
     private final Vector2 movement = new Vector2();
 
-    // Returns movement direction from WASD or arrow key inputs (-1, 0, or 1 for each axis)
+    /** 
+     * Gets the player's movement direction based on user input from WASD or arrow keys
+     * @return Vector2 movement representing the movement direction, 
+     * where x and y values are -1, 0, or 1 for each axis
+     */
     public Vector2 getInput() {
         movement.set(0, 0);
         if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) movement.x -= 1;
@@ -17,15 +22,20 @@ public class UserInput {
         return movement;
     }
 
+    /** Returns True if SPACE or ESCAPE is pressed */
     public boolean pausePressed() {
         return Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE);
     }
 
+    /** Returns True if R is pressed */
     public boolean restartPressed() {
         return Gdx.input.isKeyJustPressed(Input.Keys.R);
     }
 
-    // Selects inventory slot 1-5 using number keys,
+    /** 
+     * Checks if a number key (1-5) is pressed
+     * @return int - The index of the slot pressed (0-4), or -1 if none was pressed
+     */
     public int slotPressed() {
         for (int i = 0; i < 5; i++) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1 + i)) {
@@ -35,6 +45,7 @@ public class UserInput {
         return -1;
     }
 
+    /** Returns True if E is pressed */
     public boolean useItemPressed() {
         return Gdx.input.isKeyJustPressed(Input.Keys.E);
     }
