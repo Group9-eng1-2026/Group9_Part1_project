@@ -30,6 +30,8 @@ public class World {
     public List<Item> items = new ArrayList<>();
     public List<Entity> itemEntities = new ArrayList<>();
 
+    public static final float SEPARATE = 2f;
+
     public World() {
         player = new Player(WIDTH / 2f, HEIGHT / 2f);
         player.getInventory().add(new Bread(), 3);
@@ -79,13 +81,12 @@ public class World {
     }
 
     public void handleGeese(float deltaTime, Vector2 movement) {
+        Vector2 separate = new Vector2();
         //Geese Collisions
         for (Goose goose : this.geese){
             //Check intersections with player
-            if (goose.intersects(player)) {
-                if (goose.recovering == 0) {
-                    player.exhaustion -= 10;
-                }
+            if (goose.intersects(player) && goose.recovering <= 0) {
+                player.exhaustion -= 10;
                 //Creates wait time until 3s have passed before goose can once again move
                 goose.recovering = 3f;
             }
@@ -95,20 +96,13 @@ public class World {
 
             //Check for collisions with other geese
             for (Goose other : this.geese) {
-                //Skip if both are same
-                if (other == goose) { continue; }
+                //Skip if both are same or if they aren't colliding
+                if (other == goose || !goose.intersects(other)) { continue; }
 
-                if (other.intersects(goose)) {
-                    //Ensure no longer collides with other goose
-                    while (goose.intersects(other)){
-                        float nx = goose.pos.x + 50f;
-                        float ny = goose.pos.y + 50f;
-                        if (random.nextBoolean()) { nx *= -1; ny *= -1; }
-                        goose.changeTarget(new Player(nx, ny));
-                        goose.update(deltaTime, 10f, 10f, WIDTH, HEIGHT);
-                    }
-                    goose.changeTarget(player);
-                }
+                //Push goose away from the one it overlaps
+                separate.set(goose.pos).sub(other.pos);
+                if (separate.isZero()) { separate.setToRandomDirection(); }
+                goose.pos.mulAdd(separate.nor(), SEPARATE);
             }
         }
     }
