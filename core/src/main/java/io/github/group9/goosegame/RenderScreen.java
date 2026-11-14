@@ -188,7 +188,11 @@ public class RenderScreen {
         // Display game over message when game is lost
         if (state == GameState.LOSE) {
             batch.draw(gameOver, (WIDTH - gameOver.getWidth())/2, HEIGHT/2 + 25f);
-            font.draw(batch, "You ran out of time\nPress R to restart", WIDTH / 2f, HEIGHT / 2f - 50f, 0, Align.center, false);
+            if (clock.timeLeft <= 0) {
+            font.draw(batch, "You ran out of time\nPress R to restart", WIDTH / 2f, HEIGHT / 2f - 50f, 0, Align.center, false); 
+            } else { 
+                font.draw(batch, "The flock drained all your energy\nPress R to restart", WIDTH / 2f, HEIGHT / 2f - 50f, 0, Align.center, false); 
+            }
         }
 
         if (state == GameState.WIN) {
