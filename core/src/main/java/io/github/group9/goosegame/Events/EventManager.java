@@ -15,7 +15,7 @@ import java.util.stream.Stream;
  */
 public class EventManager {
     //Constants
-    public static final Class[] EXISTING_EVENTS = {Reload.class};
+    public static final Class[] EXISTING_EVENTS = {Reload.class, Trap.class};
     //Attributes
     public List<HiddenEvent> events;
     private int eventsTriggered;

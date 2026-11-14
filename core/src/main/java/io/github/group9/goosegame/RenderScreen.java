@@ -116,14 +116,12 @@ public class RenderScreen {
 
         //Renders events
         for (HiddenEvent i : world.eventManager.events) {
-            if (i instanceof Reload) {
-                shapes.begin(ShapeRenderer.ShapeType.Filled);
-                shapes.setColor(255, 0, 0, 1);
-                float x = i.entity.pos.x - EventEntity.SIZE / 2f;
-                float y = i.entity.pos.y - EventEntity.SIZE / 2f;
-                shapes.rect(x, y, EventEntity.SIZE, EventEntity.SIZE);
-                shapes.end();
-            }
+            shapes.begin(ShapeRenderer.ShapeType.Filled);
+            shapes.setColor(255, 0, 0, 1);
+            float x = i.entity.pos.x - EventEntity.SIZE / 2f;
+            float y = i.entity.pos.y - EventEntity.SIZE / 2f;
+            shapes.rect(x, y, EventEntity.SIZE, EventEntity.SIZE);
+            shapes.end();
         }
     }
 
