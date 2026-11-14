@@ -65,7 +65,7 @@ public class World {
                     if (random.nextInt(3, 10) > 0) {
                         int max = random.nextInt(3, 10);
                         max = min(max, geese.size());
-                        geese.subList(0, max).clear();
+                        geese.removeAll(((Bread) item).closestGeese(geese, max));
                         GeeseSpawner.geeseDispersed++;
                     }
                     toRemove.add(item);
