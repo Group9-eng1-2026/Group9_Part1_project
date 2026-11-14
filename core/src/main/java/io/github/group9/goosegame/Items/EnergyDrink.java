@@ -7,8 +7,7 @@ public class EnergyDrink extends Item {
     private static float START_DURATION = 3f;
     private float duration;
     public EnergyDrink() {
-        super("Energy Drink");
-        this.duration = START_DURATION;
+        super("Energy Drink");;
     }
 
     @Override
@@ -17,6 +16,7 @@ public class EnergyDrink extends Item {
             return false;
         }
         if (player.faster) { return false; }
+        this.duration = START_DURATION;
         player.faster = true;
         return true;
     }
