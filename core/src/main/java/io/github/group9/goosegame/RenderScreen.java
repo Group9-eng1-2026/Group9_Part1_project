@@ -210,9 +210,9 @@ public class RenderScreen {
         batch.begin();
         // Timer and counter displays
         font.draw(batch, "Time Left: " + clock.formatTime(), 15, HEIGHT - 15);
-        font.draw(batch, "Geese Left: " + (GeeseSpawner.getGeeseLeft()), 15, HEIGHT - 50);
+        font.draw(batch, "Geese Left: " + (GeeseSpawner.getGeeseLeft()), 15, HEIGHT - 60);
         font.draw(batch, "Item Counter: " + Player.itemCount, WIDTH - 15, HEIGHT - 15, 0, Align.right, false);
-        font.draw(batch, "Events Triggered: " + eventManager.getEventsTriggered(), WIDTH - 15, HEIGHT - 50, 0, Align.right, false);
+        font.draw(batch, "Events Triggered: " + eventManager.getEventsTriggered(), WIDTH - 15, HEIGHT - 60, 0, Align.right, false);
 
         if (state == GameState.PAUSED) {
             font.draw(batch, "GAME PAUSED\nPress SPACE to start/resume", WIDTH / 2f, HEIGHT / 2f, 0, Align.center, false);
